@@ -1,6 +1,7 @@
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { ClientApi } from "../../Api/Client/client.api.js";
 import { BaseSlashCommand } from "../../Modules/Base/Commands/base.slash-command.js";
+import { RootEvent } from "./root.event.js";
 
 /**
  * Singleton class for managing the Discord bot instance.
@@ -8,7 +9,7 @@ import { BaseSlashCommand } from "../../Modules/Base/Commands/base.slash-command
  */
 export class Bot {
   private static instance: Bot;
-  private readonly client: Client;
+  private readonly client: Client<true>;
   private readonly clientApi: ClientApi;
   private readonly commands: Map<string, BaseSlashCommand>;
 
@@ -36,6 +37,8 @@ export class Bot {
    */
   public async init(): Promise<void> {
     await this.clientApi.login(process.env.BOT_TOKEN);
+
+    RootEvent.init(this.client);
   }
 
   /**

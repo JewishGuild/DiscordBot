@@ -1,7 +1,7 @@
 import { Client, ClientEvents } from "discord.js";
 import { ConsoleUtilities } from "../../Utilities/console.utilities.js";
 import { BaseEvent } from "../../Modules/Base/Events/base.event.js";
-import { ReadyEvent } from "../../Modules/Base/Events/ready.event.js"; // Add more events here as needed
+import { ReadyEvent } from "../../Modules/Base/Events/ready.event.js";
 
 /**
  * Centralized event manager that registers all event handlers dynamically.

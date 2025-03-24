@@ -23,7 +23,7 @@ export abstract class BaseEvent<EventName extends keyof ClientEvents> {
    * @param name - The event name from {@link ClientEvents}.
    * @param once - If `true`, the event triggers only once.
    */
-  constructor(name: EventName, once: boolean) {
+  constructor(name: EventName, once: boolean = false) {
     this.name = name;
     this.once = once;
     this.logger = new ConsoleUtilities("Event", name);
