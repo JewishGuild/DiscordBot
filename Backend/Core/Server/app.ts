@@ -48,7 +48,7 @@ export class App {
 
     // Logging API requests for all routes under /api/*
     this.app.all("/api/*", express.json(), apiLogger.logApiRequests.bind(apiLogger));
-    this.app.use(cors({ origin: ["http://localhost:3001"], credentials: true }));
+    this.app.use(cors({ origin: [process.env.CLIENT_URL], credentials: true }));
   }
 
   /**
