@@ -6,8 +6,8 @@ import { Server } from "./Server/server.js";
 export class Launcher {
   public static async start(): Promise<void> {
     await MongoDB.connect();
-    await Bot.getInstance().init();
     await Server.getInstance().start();
+    await Bot.getInstance().init();
 
     BaseCollection.initializeDatabase(MongoDB.getDatabase());
   }

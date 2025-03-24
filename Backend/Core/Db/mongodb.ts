@@ -1,6 +1,6 @@
 import { MongoClient, Db } from "mongodb";
 import { ConsoleUtilities } from "../../Utilities/console.utilities.js";
-import { config } from "Config/root.config.js";
+import { config } from "../../Config/root.config.js";
 
 export class MongoDB {
   private static client: MongoClient;

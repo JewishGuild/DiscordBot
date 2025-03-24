@@ -1,9 +1,12 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile:dev": "rimraf ./dist && tsc -w",
+    "start:dev": "cross-env NODE_ENV=development && npm start",
+    "start:prod": "cross-env NODE_ENV=production && npm start",
+    "start": "nodemon ./dist/index.js"
   },
   "keywords": [],
   "author": "",

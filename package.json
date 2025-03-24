@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "server:compile:dev": "npm run compile:dev --prefix Backend",
+    "server:compile:prod": "",
+    "server:start:dev": "wait-on ./Backend/dist/index.js && npm run start:dev --prefix Backend",
+    "server:start:prod": ""
   },
   "keywords": [],
   "author": "",
@@ -23,7 +27,8 @@
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.28.0"
+    "typescript-eslint": "^8.28.0",
+    "wait-on": "^8.0.3"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --fix"

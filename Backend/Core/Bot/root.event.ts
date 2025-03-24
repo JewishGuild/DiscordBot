@@ -36,7 +36,7 @@ export class RootEvent {
         this.eventHandlers.set(eventInstance.name, []);
       }
       this.eventHandlers.get(eventInstance.name)?.push(eventInstance);
-      this.logger.success(`Registered event: ${eventInstance.name}`);
+      this.logger.log(`Registered event: ${eventInstance.name}`);
     }
   }
 
