@@ -1,7 +1,7 @@
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { ClientApi } from "../../Api/Client/client.api.js";
-import { BaseSlashCommand } from "../../Modules/Base/Commands/base.slash-command.js";
 import { RootEvent } from "./root.event.js";
+import { RootCommand } from "./root.command.js";
 
 /**
  * Singleton class for managing the Discord bot instance.
@@ -11,12 +11,10 @@ export class Bot {
   private static instance: Bot;
   private readonly client: Client<true>;
   private readonly clientApi: ClientApi;
-  private readonly commands: Map<string, BaseSlashCommand>;
 
   private constructor() {
     this.client = new Client({ intents: this.getIntents(), partials: this.getPartials() });
     this.clientApi = new ClientApi(this.client);
-    this.commands = new Map();
   }
 
   /**
@@ -39,15 +37,7 @@ export class Bot {
     await this.clientApi.login(process.env.BOT_TOKEN);
 
     RootEvent.init(this.client);
-  }
-
-  /**
-   * Registers a slash command.
-   *
-   * @param command - The command instance to register.
-   */
-  public registerSlashCommand(command: BaseSlashCommand): void {
-    this.commands.set(command.name, command);
+    await RootCommand.init(this.client);
   }
 
   /**
@@ -57,15 +47,6 @@ export class Bot {
    */
   public getClient(): Client {
     return this.client;
-  }
-
-  /**
-   * Retrieves the registered slash commands.
-   *
-   * @returns A map of command names to command instances.
-   */
-  public getCommands(): Map<string, BaseSlashCommand> {
-    return this.commands;
   }
 
   /**

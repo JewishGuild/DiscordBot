@@ -2,10 +2,10 @@ import { Client, ChatInputCommandInteraction, SlashCommandBuilder } from "discor
 import { ConsoleUtilities } from "../../../Utilities/console.utilities.js";
 
 /**
- * Base class for Discord slash commands.
+ * Base class for Discord commands.
  * Provides structured logging and enforces command execution rules.
  */
-export abstract class BaseSlashCommand {
+export abstract class BaseCommand {
   /** The command metadata defined using {@link SlashCommandBuilder}. */
   public readonly data: SlashCommandBuilder;
 
@@ -15,15 +15,15 @@ export abstract class BaseSlashCommand {
   /** Logger instance for structured command logging using {@link ConsoleUtilities}. */
   protected readonly logger: ConsoleUtilities;
 
-  /** Initializes a new slash command. */
+  /** Initializes a new command. */
   constructor() {
     this.data = this.buildData();
     this.name = this.data.name;
-    this.logger = new ConsoleUtilities("SlashCommand", this.name);
+    this.logger = new ConsoleUtilities("Command", this.name);
   }
 
   /**
-   * Constructs the `SlashCommandBuilder` for the command.
+   * Constructs the `CommandBuilder` for the command.
    * Must be implemented by subclasses.
    *
    * @returns A configured {@link SlashCommandBuilder} instance.
@@ -31,7 +31,7 @@ export abstract class BaseSlashCommand {
   protected abstract buildData(): SlashCommandBuilder;
 
   /**
-   * Executes the slash command. Must be implemented by subclasses.
+   * Executes the command. Must be implemented by subclasses.
    *
    * @param client - The Discord bot instance from {@link Client}.
    * @param interaction - The command interaction instance from {@link ChatInputCommandInteraction}.

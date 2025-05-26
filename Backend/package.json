@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "compile:dev": "rimraf ./dist && tsc -w",
-    "start:dev": "cross-env NODE_ENV=development && npm start",
-    "start:prod": "cross-env NODE_ENV=production && npm start",
+    "start:dev": "cross-env NODE_ENV=development dotenv -e .env.development.local npm start",
+    "start:prod": "cross-env NODE_ENV=production dotenv -e .env.production.local npm start",
     "start": "nodemon ./dist/index.js"
   },
   "keywords": [],
@@ -19,8 +19,9 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "cron": "^3.5.0",
-    "discord.js": "^14.18.0",
+    "discord.js": "^14.19.3",
     "dotenv": "^16.4.7",
+    "dotenv-cli": "^8.0.0",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "joi": "^17.13.3",
