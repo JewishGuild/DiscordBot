@@ -43,7 +43,7 @@ export class Server {
       // Ensure the app is ready before starting the server
       const app = this.appInstance.getApp();
       this.httpServer = app.listen(this.port, () => {
-        this.logger.log(`Running on ${this.host}:${this.port}`);
+        this.logger.success(`Running on ${this.host}:${this.port}`);
       });
     } catch (error) {
       this.logger.error("Failed to start server: " + (error as Error).message);

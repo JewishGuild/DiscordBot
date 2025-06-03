@@ -1,0 +1,29 @@
+export enum RestrictionRoles {
+  Muted = "1369728233666252802"
+}
+
+export enum RestrictionChannels {
+  MutedText = "1371995539276824668"
+}
+
+export enum RestrictionDurations {
+  OneMinute = 1,
+  FiveMinutes = 5,
+  FifteenMinutes = 15,
+  ThirtyMinutes = 30,
+  OneHour = 60,
+  ThreeHours = 180,
+  SixHours = 360,
+  Permanent = -1
+}
+
+export const muteDurations = [
+  { name: "1 Min", value: RestrictionDurations.OneMinute },
+  { name: "5 Min", value: RestrictionDurations.FiveMinutes },
+  { name: "15 Min", value: RestrictionDurations.FifteenMinutes },
+  { name: "30 Min", value: RestrictionDurations.ThirtyMinutes },
+  { name: "1 Hour", value: RestrictionDurations.OneHour },
+  { name: "3 Hour", value: RestrictionDurations.ThreeHours },
+  { name: "6 Hour", value: RestrictionDurations.SixHours },
+  { name: "Permanent", value: RestrictionDurations.Permanent }
+];

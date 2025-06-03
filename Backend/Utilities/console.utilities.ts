@@ -11,7 +11,7 @@ export class ConsoleUtilities {
   }
 
   public log(msg: string, subTopic = this.defaultSubTopic, topic = this.defaultTopic) {
-    console.log(chalk["blueBright"](this.getPrefix(topic, subTopic) + msg));
+    console.log(chalk["cyan"](this.getPrefix(topic, subTopic) + msg));
   }
 
   public success(msg: string, subTopic = this.defaultSubTopic, topic = this.defaultTopic) {
@@ -24,6 +24,10 @@ export class ConsoleUtilities {
 
   public warn(msg: string, subTopic = this.defaultSubTopic, topic = this.defaultTopic) {
     console.error(chalk["yellowBright"](this.getPrefix(topic, subTopic) + msg));
+  }
+
+  public info(msg: string, subTopic = this.defaultSubTopic, topic = this.defaultTopic) {
+    console.log(chalk["blueBright"](this.getPrefix(topic, subTopic) + msg));
   }
 
   public boldLog(msg: string, subTopic = this.defaultSubTopic, topic = this.defaultTopic) {

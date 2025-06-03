@@ -1,0 +1,6 @@
+export enum SupportRoles {
+  Owner = "1369723955648397332",
+  TeamLeader = "1375816878320128032",
+  Manager = "1375816826923122758",
+  Staff = "1375816764038053980"
+}

@@ -38,6 +38,8 @@ export class Bot {
 
     RootEvent.init(this.client);
     await RootCommand.init(this.client);
+
+    this.client.user.setStatus("online");
   }
 
   /**
@@ -55,8 +57,8 @@ export class Bot {
    * @returns An array of required intents.
    */
   private getIntents(): GatewayIntentBits[] {
-    const { Guilds, GuildMembers, GuildMessages, MessageContent, GuildScheduledEvents, GuildVoiceStates } = GatewayIntentBits;
-    return [Guilds, GuildMembers, GuildMessages, MessageContent, GuildScheduledEvents, GuildVoiceStates];
+    const { Guilds, GuildMembers, GuildMessages, MessageContent, GuildVoiceStates } = GatewayIntentBits;
+    return [Guilds, GuildMembers, GuildMessages, MessageContent, GuildVoiceStates];
   }
 
   /**
@@ -65,7 +67,7 @@ export class Bot {
    * @returns An array of required partials.
    */
   private getPartials(): Partials[] {
-    const { User, Message, GuildMember, ThreadMember } = Partials;
-    return [User, Message, GuildMember, ThreadMember];
+    const { User, Message, GuildMember } = Partials;
+    return [User, Message, GuildMember];
   }
 }

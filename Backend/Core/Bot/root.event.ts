@@ -1,7 +1,10 @@
 import { Client, ClientEvents } from "discord.js";
 import { ConsoleUtilities } from "../../Utilities/console.utilities.js";
 import { BaseEvent } from "../../Modules/Base/Events/base.event.js";
-import { ReadyEvent } from "../../Modules/Base/Events/ready.event.js";
+import { readyEvent } from "../../Modules/Base/Events/ready.event.js";
+import { interactiveEvent } from "../../Modules/Interactive/Events/interactive.event.js";
+import { channelPresetEvent } from "../../Modules/Moderation/Events/channel-preset.event.js";
+import { interactionEvent } from "../../Modules/Base/Events/interaction.event.js";
 
 /**
  * Centralized event manager that registers all event handlers dynamically.
@@ -20,7 +23,7 @@ export class RootEvent {
   public static init(client: Client<true>): void {
     this.logger.log("Initializing event handlers...");
 
-    const eventInstances: BaseEvent<keyof ClientEvents>[] = [new ReadyEvent()];
+    const eventInstances: BaseEvent<keyof ClientEvents>[] = [readyEvent, interactiveEvent, channelPresetEvent, interactionEvent];
 
     this.registerEvents(eventInstances);
     this.attachEvents(client);
@@ -36,8 +39,8 @@ export class RootEvent {
         this.eventHandlers.set(eventInstance.name, []);
       }
       this.eventHandlers.get(eventInstance.name)?.push(eventInstance);
-      this.logger.log(`Registered event: ${eventInstance.name}`);
     }
+    this.logger.success(`Registered events: ${eventInstances.map((eventInstance) => eventInstance.name).join(", ")}`);
   }
 
   /**

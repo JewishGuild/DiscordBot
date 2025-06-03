@@ -1,6 +1,7 @@
 import { BaseCollection } from "../Modules/Base/Models/base.collection.js";
 import { Bot } from "./Bot/bot.js";
 import { MongoDB } from "./Db/mongodb.js";
+import { RootJob } from "./Server/root.job.js";
 import { Server } from "./Server/server.js";
 
 export class Launcher {
@@ -10,5 +11,6 @@ export class Launcher {
     await Bot.getInstance().init();
 
     BaseCollection.initializeDatabase(MongoDB.getDatabase());
+    RootJob.startAll();
   }
 }

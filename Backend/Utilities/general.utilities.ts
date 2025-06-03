@@ -26,4 +26,8 @@ export class GeneralUtilities {
     const __filename = fileURLToPath(url);
     return path.dirname(__filename);
   }
+
+  public static capitalize(text: string): string {
+    return text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+  }
 }

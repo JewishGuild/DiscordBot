@@ -15,7 +15,7 @@ const environment = process.env.NODE_ENV || "development";
 
 export const config = {
   environment,
-  appName: "{appName}",
+  appName: "JewishGuild",
   mongodb: mongodb[environment],
   server: server[environment]
 };

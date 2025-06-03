@@ -10,17 +10,18 @@ export class MongoDB {
 
   /** Connects to MongoDB */
   public static async connect(): Promise<void> {
+    this.logger.log(`Attempting to connect to the database on host ${this.host}`);
     if (!this.client) {
       this.client = new MongoClient(this.host);
 
-      this.client.on("error", (err) => MongoDB.logger.error(err.message));
+      this.client.on("error", (err) => this.logger.error(err.message));
 
       try {
         await this.client.connect();
         this.db = this.client.db(this.getDatabaseName());
-        MongoDB.logger.log(`Connected to database: ${this.getDatabaseName()}`);
+        this.logger.success(`Connected to database: ${this.getDatabaseName()}`);
       } catch (error) {
-        MongoDB.logger.error(`Failed to connect to MongoDB: ${error}`);
+        this.logger.error(`Failed to connect to MongoDB: ${error}`);
       }
     }
   }
