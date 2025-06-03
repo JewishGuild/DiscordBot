@@ -4,9 +4,11 @@
   "type": "module",
   "scripts": {
     "compile:dev": "rimraf ./dist && tsc -w",
-    "start:dev": "cross-env NODE_ENV=development dotenv -e .env.development.local npm start",
-    "start:prod": "cross-env NODE_ENV=production dotenv -e .env.production.local npm start",
-    "start": "nodemon ./dist/index.js"
+    "start:dev": "cross-env NODE_ENV=development dotenv -e .env.development.local npm nodemon-start",
+    "start:prod": "cross-env NODE_ENV=production dotenv -e .env.production.local npm nodemon-start",
+    "nodemon-start": "nodemon ./dist/index.js",
+    "build": "tsc",
+    "start": "node ./dist/index.js"
   },
   "keywords": [],
   "author": "",

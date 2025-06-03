@@ -7,7 +7,9 @@
     "server:compile:dev": "npm run compile:dev --prefix Backend",
     "server:compile:prod": "",
     "server:start:dev": "wait-on ./Backend/dist/index.js && npm run start:dev --prefix Backend",
-    "server:start:prod": ""
+    "server:start:prod": "",
+    "build": "npm run build --prefix Backend",
+    "start": "npm run start --prefix Backend"
   },
   "keywords": [],
   "author": "",
