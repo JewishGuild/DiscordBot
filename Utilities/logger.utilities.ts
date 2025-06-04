@@ -13,6 +13,7 @@ export class LoggerUtilities {
   private static readonly logger = new ConsoleUtilities("Logger");
 
   public static async log({ embed, user, title }: LogParams) {
+    console.log(user.avatarURL());
     embed.setAuthor({ name: user.username, iconURL: user.avatarURL() || "" });
     embed.setTimestamp();
     embed.setTitle(title);
