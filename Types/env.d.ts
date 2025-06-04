@@ -7,6 +7,7 @@ declare namespace NodeJS {
     MONGO_CLUSTER: string;
     CLIENT_URL: string;
     BOT_TOKEN: string;
+    WEBHOOK_URL: string;
     NODE_ENV: "development" | "production";
   }
 }

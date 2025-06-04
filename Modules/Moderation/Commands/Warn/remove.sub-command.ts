@@ -14,11 +14,11 @@ class RemoveSubCommand extends BaseSubCommand {
     const success = await RestrictionService.unWarnUser(id);
     const embed = this.constructEmbed(interaction.user.id, id, success);
     InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-    LoggerUtilities.log({ embeds: [embed] });
+    LoggerUtilities.log({ title: "Warning Removed", embed, user: interaction.user });
   }
 
   private constructEmbed(modId: Snowflake, id: string, success: boolean) {
-    const description = success ? `✅ Warning \`${id}\` has been revoked by <@${modId}>` : `❌ Warning \`${id}\` not found`;
+    const description = success ? `Warning \`${id}\` has been revoked by <@${modId}>` : `Warning \`${id}\` not found`;
     const color = success ? Colors.Green : Colors.Red;
     return new Embed({ color, description }, { color: { state: false } });
   }

@@ -6,6 +6,7 @@ import {
   GuildMember,
   PermissionFlagsBits,
   SlashCommandBuilder,
+  Snowflake,
   TextChannel
 } from "discord.js";
 import { BaseCommand } from "../../Base/Commands/base.command.js";
@@ -31,13 +32,16 @@ class ClearCommand extends BaseCommand {
     await channel.bulkDelete(amount);
 
     /* Handle reply */
-    const embed = this.constructEmbed(amount);
-    InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-    LoggerUtilities.log({ embeds: [embed] });
+    InteractionUtilities.fadeReply(interaction, { embeds: [this.constructEmbed(amount)] });
+    LoggerUtilities.log({ title: "Messages Cleared", embed: this.constructLogEmbed(amount, channel.id), user: interaction.user });
   }
 
   private constructEmbed(amount: number) {
     return new Embed({ color: Colors.Green, description: `✅ Deleted ${amount} messages` }, { color: { state: false } });
+  }
+
+  private constructLogEmbed(amount: number, id: Snowflake) {
+    return new Embed({ color: Colors.Green, description: `Deleted ${amount} messages in channel <#${id}>` }, { color: { state: false } });
   }
 
   protected buildData(): SlashCommandBuilder {

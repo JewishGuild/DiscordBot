@@ -16,13 +16,15 @@ class ListSubCommand extends BaseSubCommand {
   }
 
   private constructEmbed(userTag: string, warnings: Array<WarningEntry>) {
-    return new Embed({
+    const embed = new Embed({
       title: `Warning list of ${userTag}`,
       fields: warnings.map((warn) => ({
         name: `Reason: ${warn.reason}`,
         value: `Given by: <@${warn.moderatorId}>\nAt: \`${warn.createDate}\`\nID: \`${warn._id.toString()}\``
       }))
     });
+    console.log(embed);
+    return embed;
   }
 
   protected buildData(): SlashCommandSubcommandBuilder {

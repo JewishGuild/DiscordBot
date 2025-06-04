@@ -2,7 +2,6 @@ import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { ClientApi } from "../../Api/Client/client.api.js";
 import { RootEvent } from "./root.event.js";
 import { RootCommand } from "./root.command.js";
-import { LoggerUtilities } from "../../Utilities/logger.utilities.js";
 
 /**
  * Singleton class for managing the Discord bot instance.
@@ -41,7 +40,6 @@ export class Bot {
     await RootCommand.init(this.client);
 
     this.client.user.setStatus("online");
-    LoggerUtilities.setLogChannel(this.client);
   }
 
   /**

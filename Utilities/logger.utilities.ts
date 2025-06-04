@@ -1,24 +1,31 @@
-import { Client, Guild, MessageCreateOptions, MessagePayload, TextChannel } from "discord.js";
-import { ChannelService } from "../Api/Guild/Channel/channel.service.js";
+import axios from "axios";
+import { User } from "discord.js";
 import { ConsoleUtilities } from "./console.utilities.js";
+import { Embed } from "../Api/Components/Embed/embed.component.js";
 
-const logChannelId = "1379785979103154257";
+type LogParams = {
+  title: string;
+  user: User;
+  embed: Embed;
+};
 
 export class LoggerUtilities {
-  private static logChannel: TextChannel;
   private static readonly logger = new ConsoleUtilities("Logger");
 
-  public static async setLogChannel(client: Client) {
-    const channelService = new ChannelService(client.guilds.cache.first() as Guild);
-    this.logChannel = await channelService.resolveChannelById(logChannelId);
-    this.logger.success("Log channel set successfully");
-  }
+  public static async log({ embed, user, title }: LogParams) {
+    embed.setAuthor({ name: user.username, iconURL: user.avatarURL() || "" });
+    embed.setTimestamp();
+    embed.setTitle(title);
+    embed.setFooter({
+      text: `Made by the development team`,
+      iconURL: "https://cdn.discordapp.com/icons/1369668963021099131/578c1fa7db06a857a2c25c91191fb594.webp?size=80&quality=lossless"
+    });
 
-  public static getLogChannel() {
-    return this.logChannel;
-  }
-
-  public static async log(options: string | MessagePayload | MessageCreateOptions) {
-    await this.logChannel.send(options);
+    try {
+      await axios.post(process.env.WEBHOOK_URL, { embeds: [embed] }, { headers: { "Content-Type": "application/json" } });
+    } catch (err) {
+      // @ts-ignore
+      this.logger.error(err.message as string);
+    }
   }
 }

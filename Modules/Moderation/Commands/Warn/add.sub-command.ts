@@ -22,7 +22,7 @@ class AddSubCommand extends BaseSubCommand {
     const embed = this.constructEmbed(user.id, interaction.user.id, reason);
     await RestrictionService.warnUser(user.id, interaction.user.id, reason);
     InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-    LoggerUtilities.log({ embeds: [embed] });
+    LoggerUtilities.log({ title: "Member Warned", embed, user: interaction.user });
 
     /* Checks for auto mute */
     await RestrictionService.warnMute(member);
@@ -30,7 +30,7 @@ class AddSubCommand extends BaseSubCommand {
 
   private constructEmbed(userId: Snowflake, modId: Snowflake, reason: string) {
     return new Embed(
-      { color: Colors.Green, description: `✅ <@${userId}> has been warned by <@${modId}> with reason: \`${reason}\`` },
+      { color: Colors.Green, description: `<@${userId}> has been warned by <@${modId}> with reason: \`${reason}\`` },
       { color: { state: false } }
     );
   }

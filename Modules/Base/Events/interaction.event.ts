@@ -26,7 +26,7 @@ class InteractionEvent extends BaseEvent<"interactionCreate"> {
         //@ts-ignore
         const embed = this.createErrorEmbed(error.message);
         InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-        LoggerUtilities.log({ embeds: [embed] });
+        LoggerUtilities.log({ title: "Error", embed, user: interaction.user });
       }
     }
   }

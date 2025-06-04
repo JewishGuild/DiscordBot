@@ -27,7 +27,7 @@ class UnmuteCommand extends BaseCommand {
     const embed = this.constructEmbed(member.id, interaction.user.id);
     await RestrictionService.unmuteMember(member);
     InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-    LoggerUtilities.log({ embeds: [embed] });
+    LoggerUtilities.log({ embed, title: "Member Unmuted", user: interaction.user });
   }
 
   private constructEmbed(memberId: Snowflake, modId: Snowflake) {

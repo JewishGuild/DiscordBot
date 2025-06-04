@@ -32,11 +32,11 @@ class MuteCommand extends BaseCommand {
     const embed = this.constructEmbed(member.id, interaction.user.id, duration, reason);
     await RestrictionService.muteMember(member, interaction.user.id, duration, reason);
     InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-    LoggerUtilities.log({ embeds: [embed] });
+    LoggerUtilities.log({ title: "Member Muted", user: interaction.user, embed });
   }
 
   private constructEmbed(memberId: Snowflake, modId: Snowflake, duration: number, reason: string) {
-    return Embed.BaseEmbed({
+    return new Embed({
       description: `<@${memberId}> has been muted by <@${modId}> ${
         duration === RestrictionDurations.Permanent ? "Permanently" : `for \`${duration}m\``
       } with reason: \`${reason}\``
