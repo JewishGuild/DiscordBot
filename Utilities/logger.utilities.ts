@@ -22,6 +22,7 @@ export class LoggerUtilities {
     });
 
     try {
+      this.logger.log(`${embed.toJSON()}`);
       await axios.post(process.env.WEBHOOK_URL, JSON.stringify({ embeds: [embed.toJSON()] }), { headers: { "Content-Type": "application/json" } });
     } catch (err) {
       // @ts-ignore
