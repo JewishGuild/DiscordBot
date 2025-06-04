@@ -14,7 +14,7 @@ export const config: EmbedConfig = {
     state: false,
     value: {
       text: `Made by the development team`,
-      iconURL: "https://cdn.discordapp.com/icons/1369668963021099131/578c1fa7db06a857a2c25c91191fb594.webp?size=80&quality=lossless"
+      iconURL: "https://cdn.discordapp.com/avatars/1376543468897308765/7fc7f440986eba5c8c5b3e1160d4b2c5.webp"
     }
   }
 };

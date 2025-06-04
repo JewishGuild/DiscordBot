@@ -19,14 +19,14 @@ export class LoggerUtilities {
     embed.setTitle(title);
     embed.setFooter({
       text: `Made by the development team`,
-      iconURL: "https://cdn.discordapp.com/icons/1369668963021099131/578c1fa7db06a857a2c25c91191fb594.webp"
+      iconURL: "https://cdn.discordapp.com/avatars/1376543468897308765/7fc7f440986eba5c8c5b3e1160d4b2c5.webp"
     });
 
     try {
       await axios.post(process.env.WEBHOOK_URL, { embeds: [embed] }, { headers: { "Content-Type": "application/json" } });
     } catch (err) {
       // @ts-ignore
-      this.logger.error(err.message as string);
+      this.logger.error(err as string);
     }
   }
 }
