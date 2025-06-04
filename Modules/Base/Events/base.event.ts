@@ -35,5 +35,5 @@ export abstract class BaseEvent<EventName extends keyof ClientEvents> {
    * @param client - The Discord bot instance from {@link Client}.
    * @param args - The event-specific parameters from {@link ClientEvents}[`EventName`].
    */
-  public abstract execute(client: Client<true>, ...args: ClientEvents[EventName]): Promise<void>;
+  public abstract execute(client: Client<true>, ...args: ClientEvents[EventName]): Promise<void> | void;
 }

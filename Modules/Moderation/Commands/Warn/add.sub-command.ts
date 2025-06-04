@@ -4,6 +4,8 @@ import { RestrictionService } from "../../../../Modules/Moderation/Services/rest
 import { Embed } from "../../../../Api/Components/Embed/embed.component.js";
 import { MemberService } from "../../../../Api/Guild/Member/member.service.js";
 import { StaffService } from "../../../../Modules/Moderation/Services/staff.service.js";
+import { InteractionUtilities } from "../../../../Utilities/interaction.utilities.js";
+import { LoggerUtilities } from "../../../../Utilities/logger.utilities.js";
 
 class AddSubCommand extends BaseSubCommand {
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
@@ -17,8 +19,10 @@ class AddSubCommand extends BaseSubCommand {
     if (StaffService.isStaffMember(member)) throw new Error("Can't warn a staff member.");
 
     /* Adds the warning */
+    const embed = this.constructEmbed(user.id, interaction.user.id, reason);
     await RestrictionService.warnUser(user.id, interaction.user.id, reason);
-    interaction.reply({ embeds: [this.constructEmbed(user.id, interaction.user.id, reason)] });
+    InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
+    LoggerUtilities.log({ embeds: [embed] });
 
     /* Checks for auto mute */
     await RestrictionService.warnMute(member);

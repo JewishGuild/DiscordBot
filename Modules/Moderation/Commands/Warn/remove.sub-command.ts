@@ -2,6 +2,8 @@ import { Client, ChatInputCommandInteraction, SlashCommandSubcommandBuilder, Sno
 import { BaseSubCommand } from "../../../Base/Commands/base.sub-command.js";
 import { RestrictionService } from "../../../../Modules/Moderation/Services/restriction.service.js";
 import { Embed } from "../../../../Api/Components/Embed/embed.component.js";
+import { InteractionUtilities } from "../../../../Utilities/interaction.utilities.js";
+import { LoggerUtilities } from "../../../../Utilities/logger.utilities.js";
 
 class RemoveSubCommand extends BaseSubCommand {
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
@@ -10,7 +12,9 @@ class RemoveSubCommand extends BaseSubCommand {
 
     /* Adds the warning */
     const success = await RestrictionService.unWarnUser(id);
-    interaction.reply({ embeds: [this.constructEmbed(interaction.user.id, id, success)] });
+    const embed = this.constructEmbed(interaction.user.id, id, success);
+    InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
+    LoggerUtilities.log({ embeds: [embed] });
   }
 
   private constructEmbed(modId: Snowflake, id: string, success: boolean) {

@@ -6,6 +6,8 @@ import { muteDurations, RestrictionDurations } from "../Config/restriction.confi
 import { RestrictionService } from "../Services/restriction.service.js";
 import { StaffService } from "../Services/staff.service.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
+import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
+import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
 
 class MuteCommand extends BaseCommand {
   constructor() {
@@ -27,8 +29,10 @@ class MuteCommand extends BaseCommand {
     if (StaffService.isStaffMember(member)) throw new Error("Can't mute a staff member.");
 
     /* Apply mute to member */
+    const embed = this.constructEmbed(member.id, interaction.user.id, duration, reason);
     await RestrictionService.muteMember(member, interaction.user.id, duration, reason);
-    interaction.reply({ embeds: [this.constructEmbed(member.id, interaction.user.id, duration, reason)] });
+    InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
+    LoggerUtilities.log({ embeds: [embed] });
   }
 
   private constructEmbed(memberId: Snowflake, modId: Snowflake, duration: number, reason: string) {

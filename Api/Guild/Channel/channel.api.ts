@@ -38,7 +38,7 @@ export class ChannelApi extends GuildApi {
    * @returns A promise resolving to the fetched channel.
    */
   public async getChannelById<T = GuildBasedChannel>(id: string, options?: BaseFetchOptions) {
-    return this.channelManager.fetch(id as Snowflake, options) as T;
+    return this.channelManager.fetch(id as Snowflake, { ...options, ...{ cache: true } }) as T;
   }
 
   /**

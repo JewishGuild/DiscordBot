@@ -2,6 +2,8 @@ import { Client, ClientEvents, Colors } from "discord.js";
 import { BaseEvent } from "./base.event.js";
 import { RootCommand } from "../../../Core/Bot/root.command.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
+import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
+import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
 
 class InteractionEvent extends BaseEvent<"interactionCreate"> {
   constructor() {
@@ -22,7 +24,9 @@ class InteractionEvent extends BaseEvent<"interactionCreate"> {
       } catch (error) {
         this.logger.error(`Command ${commandIdentifier} has crashed, info: ${error}`);
         //@ts-ignore
-        await interaction.reply({ embeds: [this.createErrorEmbed(error.message)] });
+        const embed = this.createErrorEmbed(error.message);
+        InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
+        LoggerUtilities.log({ embeds: [embed] });
       }
     }
   }

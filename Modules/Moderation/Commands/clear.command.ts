@@ -11,7 +11,8 @@ import {
 import { BaseCommand } from "../../Base/Commands/base.command.js";
 import { SupportService } from "../Services/support.service.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
-import { GeneralUtilities } from "../../../Utilities/general.utilities.js";
+import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
+import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
 
 class ClearCommand extends BaseCommand {
   constructor() {
@@ -30,9 +31,9 @@ class ClearCommand extends BaseCommand {
     await channel.bulkDelete(amount);
 
     /* Handle reply */
-    const message = await interaction.reply({ embeds: [this.constructEmbed(amount)] });
-    await GeneralUtilities.sleep(2000); // wait 2 seconds
-    await message.delete(); //
+    const embed = this.constructEmbed(amount);
+    InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
+    LoggerUtilities.log({ embeds: [embed] });
   }
 
   private constructEmbed(amount: number) {

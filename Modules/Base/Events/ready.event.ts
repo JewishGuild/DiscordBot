@@ -6,7 +6,8 @@ class ReadyEvent extends BaseEvent<"ready"> {
     super("ready", true);
   }
 
-  public async execute(client: Client<true>): Promise<void> {
+  // Handshake, must be synchronous
+  public execute(client: Client<true>): void {
     this.logger.info(`Logged as client ${client.user!.username}`);
   }
 }

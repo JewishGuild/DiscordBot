@@ -1,9 +1,11 @@
-import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, GuildMember, SlashCommandBuilder } from "discord.js";
+import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, GuildMember, SlashCommandBuilder, Snowflake } from "discord.js";
 import { BaseCommand } from "../../Base/Commands/base.command.js";
 import { SupportService } from "../Services/support.service.js";
 import { RestrictionService } from "../Services/restriction.service.js";
 import { MemberService } from "../../../Api/Guild/Member/member.service.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
+import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
+import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
 
 class UnmuteCommand extends BaseCommand {
   constructor() {
@@ -22,8 +24,16 @@ class UnmuteCommand extends BaseCommand {
     const member = await memberApi.resolveMemberById(user.id);
 
     /* Apply temp mute to member */
+    const embed = this.constructEmbed(member.id, interaction.user.id);
     await RestrictionService.unmuteMember(member);
-    interaction.reply({ embeds: [Embed.BaseEmbed({ description: `<@${member.id}> has been unmuted by <@${interaction.user.id}>` })] });
+    InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
+    LoggerUtilities.log({ embeds: [embed] });
+  }
+
+  private constructEmbed(memberId: Snowflake, modId: Snowflake) {
+    return Embed.BaseEmbed({
+      description: `<@${memberId}> has been unmuted by <@${modId}>`
+    });
   }
 
   protected buildData(): SlashCommandBuilder {
