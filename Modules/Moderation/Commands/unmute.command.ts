@@ -23,7 +23,7 @@ class UnmuteCommand extends BaseCommand {
     const memberApi = new MemberService(interaction.guild);
     const member = await memberApi.resolveMemberById(user.id);
 
-    /* Apply temp mute to member */
+    /* Apply mute to member */
     const embed = this.constructEmbed(member.id, interaction.user.id);
     await RestrictionService.unmuteMember(member);
     InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
