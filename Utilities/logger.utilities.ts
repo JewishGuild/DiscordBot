@@ -13,7 +13,6 @@ export class LoggerUtilities {
   private static readonly logger = new ConsoleUtilities("Logger");
 
   public static async log({ embed, user, title }: LogParams) {
-    console.log(user.avatarURL());
     embed.setAuthor({ name: user.username, iconURL: user.avatarURL() || "" });
     embed.setTimestamp();
     embed.setTitle(title);
@@ -23,10 +22,10 @@ export class LoggerUtilities {
     });
 
     try {
-      await axios.post(process.env.WEBHOOK_URL, { embeds: [embed] }, { headers: { "Content-Type": "application/json" } });
+      await axios.post(process.env.WEBHOOK_URL, JSON.stringify({ embeds: [embed] }), { headers: { "Content-Type": "application/json" } });
     } catch (err) {
       // @ts-ignore
-      this.logger.error(err as string);
+      this.logger.error(err.message as string);
     }
   }
 }
