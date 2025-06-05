@@ -2,7 +2,6 @@ import { EmbedBuilder, EmbedData } from "discord.js";
 import { config } from "./embed.config.js";
 import { GeneralUtilities } from "../../../Utilities/general.utilities.js";
 import { EmbedConfig, EmbedConfigOverrides } from "./embed.types.js";
-import assignDeep from "assign-deep";
 
 export class Embed extends EmbedBuilder {
   private readonly config: EmbedConfig;
@@ -31,7 +30,7 @@ export class Embed extends EmbedBuilder {
   }
 
   private getConfig(overrides: EmbedConfigOverrides = {}): EmbedConfig {
-    return assignDeep(config, overrides);
+    return GeneralUtilities.deepMerge(config, overrides);
   }
 
   public static BaseEmbed = (data: EmbedData) => new Embed(data, { footer: { state: false } });
