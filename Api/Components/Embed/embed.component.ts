@@ -10,6 +10,7 @@ export class Embed extends EmbedBuilder {
   constructor(data: EmbedData, overrides: EmbedConfigOverrides = {}) {
     super(data);
     this.config = this.getConfig(overrides);
+    console.log(this.config);
     this.implementConfig();
   }
 

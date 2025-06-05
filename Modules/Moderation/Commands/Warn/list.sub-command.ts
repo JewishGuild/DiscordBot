@@ -23,7 +23,6 @@ class ListSubCommand extends BaseSubCommand {
         value: `Given by: <@${warn.moderatorId}>\nAt: \`${warn.createDate}\`\nID: \`${warn._id.toString()}\``
       }))
     });
-    console.log(embed);
     return embed;
   }
 
