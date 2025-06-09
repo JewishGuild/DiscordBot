@@ -1,9 +1,8 @@
 import { Snowflake } from "discord.js";
 import { BaseCollection } from "../../Base/Models/base.collection.js";
-import { Warning, WarningEntry } from "../Types/warns.types.js";
-import { ObjectId } from "mongodb";
+import { Warning, WarningEntity } from "../Types/warns.types.js";
 
-export class WarnsCollection extends BaseCollection<WarningEntry> {
+export class WarnsCollection extends BaseCollection<WarningEntity> {
   private static instance: WarnsCollection;
 
   constructor() {

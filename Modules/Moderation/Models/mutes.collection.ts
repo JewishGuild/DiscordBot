@@ -1,8 +1,8 @@
 import { Snowflake } from "discord.js";
 import { BaseCollection } from "../../Base/Models/base.collection.js";
-import { MutedMember, MutedMemberEntry } from "../Types/mutes.types.js";
+import { MutedMember, MutedMemberEntity } from "../Types/mutes.types.js";
 
-export class MutedMemberCollection extends BaseCollection<MutedMemberEntry> {
+export class MutedMemberCollection extends BaseCollection<MutedMemberEntity> {
   private static instance: MutedMemberCollection;
 
   constructor() {
@@ -40,7 +40,7 @@ export class MutedMemberCollection extends BaseCollection<MutedMemberEntry> {
     return this.deleteByQuery({ id });
   }
 
-  public async getExpiredMutedMembers(): Promise<MutedMemberEntry[]> {
+  public async getExpiredMutedMembers(): Promise<MutedMemberEntity[]> {
     const currentTimestamp = Date.now();
 
     const query = {

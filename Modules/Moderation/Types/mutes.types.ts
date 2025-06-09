@@ -10,4 +10,4 @@ export type MutedMember = {
   permanent: boolean;
 };
 
-export type MutedMemberEntry = MutedMember & BaseEntity;
+export type MutedMemberEntity = MutedMember & BaseEntity;

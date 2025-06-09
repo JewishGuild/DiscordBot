@@ -1,9 +1,9 @@
 import { Client, ChatInputCommandInteraction, SlashCommandSubcommandBuilder, Snowflake, Colors, Guild } from "discord.js";
 import { BaseSubCommand } from "../../../Base/Commands/base.sub-command.js";
-import { RestrictionService } from "../../../../Modules/Moderation/Services/restriction.service.js";
+import { RestrictionService } from "../../Services/restriction.service.js";
 import { Embed } from "../../../../Api/Components/Embed/embed.component.js";
 import { MemberService } from "../../../../Api/Guild/Member/member.service.js";
-import { StaffService } from "../../../../Modules/Moderation/Services/staff.service.js";
+import { StaffService } from "../../Services/staff.service.js";
 import { InteractionUtilities } from "../../../../Utilities/interaction.utilities.js";
 import { LoggerUtilities } from "../../../../Utilities/logger.utilities.js";
 

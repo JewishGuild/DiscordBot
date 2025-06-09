@@ -8,4 +8,4 @@ export type Warning = {
   timestamp: number;
 };
 
-export type WarningEntry = Warning & BaseEntity;
+export type WarningEntity = Warning & BaseEntity;

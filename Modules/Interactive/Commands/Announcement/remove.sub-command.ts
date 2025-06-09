@@ -1,24 +1,24 @@
 import { Client, ChatInputCommandInteraction, SlashCommandSubcommandBuilder, Snowflake, Colors } from "discord.js";
 import { BaseSubCommand } from "../../../Base/Commands/base.sub-command.js";
-import { RestrictionService } from "../../Services/restriction.service.js";
 import { Embed } from "../../../../Api/Components/Embed/embed.component.js";
 import { InteractionUtilities } from "../../../../Utilities/interaction.utilities.js";
 import { LoggerUtilities } from "../../../../Utilities/logger.utilities.js";
+import { AnnouncementService } from "../../Services/announcements.service.js";
 
 class RemoveSubCommand extends BaseSubCommand {
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
     /* Get selected options */
-    const id = interaction.options.getString("id", true);
+    const name = interaction.options.getString("name", true);
 
-    /* Adds the warning */
-    const success = await RestrictionService.unWarnUser(id);
-    const embed = this.constructEmbed(interaction.user.id, id, success);
+    /* Removes the announcement */
+    const success = await AnnouncementService.removeAnnouncement(name);
+    const embed = this.constructEmbed(interaction.user.id, name, success);
     InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-    LoggerUtilities.log({ title: "Warning Removed", embed, user: interaction.user });
+    LoggerUtilities.log({ title: "Announcement Removed", embed, user: interaction.user });
   }
 
-  private constructEmbed(modId: Snowflake, id: string, success: boolean) {
-    const description = success ? `Warning \`${id}\` has been revoked by <@${modId}>` : `Warning \`${id}\` not found`;
+  private constructEmbed(id: Snowflake, name: string, success: boolean) {
+    const description = success ? `Announcement \`${name}\` has been removed by <@${id}>` : `Announcement \`${name}\` not found`;
     const color = success ? Colors.Green : Colors.Red;
     return new Embed({ color, description }, { color: { state: false } });
   }
@@ -26,8 +26,8 @@ class RemoveSubCommand extends BaseSubCommand {
   protected buildData(): SlashCommandSubcommandBuilder {
     return new SlashCommandSubcommandBuilder()
       .setName("remove")
-      .setDescription("Removes a warning from a member")
-      .addStringOption((id) => id.setName("id").setDescription("Id of the warning").setRequired(true));
+      .setDescription("Removes an announcement")
+      .addStringOption((name) => name.setName("name").setDescription("Name of the announcement").setRequired(true));
   }
 }
 

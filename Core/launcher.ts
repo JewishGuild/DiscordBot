@@ -7,10 +7,11 @@ import { Server } from "./Server/server.js";
 export class Launcher {
   public static async start(): Promise<void> {
     await MongoDB.connect();
+    BaseCollection.initializeDatabase(MongoDB.getDatabase());
+
     await Server.getInstance().start();
     await Bot.getInstance().init();
 
-    BaseCollection.initializeDatabase(MongoDB.getDatabase());
     RootJob.startAll();
   }
 }

@@ -1,8 +1,8 @@
 import { Client, ChatInputCommandInteraction, SlashCommandSubcommandBuilder, Snowflake, Colors } from "discord.js";
 import { BaseSubCommand } from "../../../Base/Commands/base.sub-command.js";
-import { RestrictionService } from "../../../../Modules/Moderation/Services/restriction.service.js";
+import { RestrictionService } from "../../Services/restriction.service.js";
 import { Embed } from "../../../../Api/Components/Embed/embed.component.js";
-import { WarningEntry } from "Modules/Moderation/Types/warns.types.js";
+import { WarningEntity } from "Modules/Moderation/Types/warns.types.js";
 
 class ListSubCommand extends BaseSubCommand {
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
@@ -15,7 +15,7 @@ class ListSubCommand extends BaseSubCommand {
     interaction.reply({ embeds: [this.constructEmbed(user.tag, warnings)] });
   }
 
-  private constructEmbed(userTag: string, warnings: Array<WarningEntry>) {
+  private constructEmbed(userTag: string, warnings: Array<WarningEntity>) {
     const embed = new Embed({
       title: `Warning list of ${userTag}`,
       fields: warnings.map((warn) => ({
