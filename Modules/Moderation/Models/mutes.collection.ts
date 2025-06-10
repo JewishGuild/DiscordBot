@@ -25,6 +25,10 @@ export class MutedMemberCollection extends BaseCollection<MutedMemberEntity> {
     return this.update({ id }, Object.assign({}, ...args));
   }
 
+  public async getMutedMemberById(id: Snowflake) {
+    return this.getOneByQuery({ id });
+  }
+
   public async upsertMutedMember(id: Snowflake, ...args: Partial<MutedMember>[]) {
     const existing = await this.getOneByQuery({ id });
 
