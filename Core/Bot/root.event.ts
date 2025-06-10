@@ -5,7 +5,6 @@ import { readyEvent } from "../../Modules/Base/Events/ready.event.js";
 import { interactiveEvent } from "../../Modules/Interactive/Events/interactive.event.js";
 import { channelPresetEvent } from "../../Modules/Moderation/Events/channel-preset.event.js";
 import { interactionEvent } from "../../Modules/Base/Events/interaction.event.js";
-import { spamDetectionEvent } from "../../Modules/Moderation/Events/spam-detection.event.js";
 import { muteEvent } from "../../Modules/Moderation/Events/mute.event.js";
 
 /**
@@ -25,7 +24,7 @@ export class RootEvent {
   public static init(client: Client<true>): void {
     this.logger.log("Initializing event handlers...");
 
-    const eventInstances: BaseEvent<keyof ClientEvents>[] = [readyEvent, interactiveEvent, channelPresetEvent, interactionEvent, spamDetectionEvent, muteEvent];
+    const eventInstances: BaseEvent<keyof ClientEvents>[] = [readyEvent, interactiveEvent, channelPresetEvent, interactionEvent, muteEvent];
 
     this.registerEvents(eventInstances);
     this.attachEvents(client);
