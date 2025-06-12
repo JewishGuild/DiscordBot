@@ -10,62 +10,36 @@ const funnyComeBacks = [
   "ליצן בכלל"
 ];
 
-const emoSentencesHebrew: string[] = [
-  // About pain and darkness
-  "הכאב שלי הוא החבר הכי טוב שלי", // My pain is my best friend
-  "אני שוקע בים של דמעות", // I'm drowning in a sea of tears
-  "הלב שלי שבור למיליון חלקים", // My heart is broken into a million pieces
-  "החושך הוא הבית שלי", // Darkness is my home
-  "אני נושם כאב במקום אוויר", // I breathe pain instead of air
+const gayFunnySentencesHebrew: string[] = [
+  "אני לא דרמה קווין, אני הדרמה עצמה",
+  "אין דבר כזה יותר מדי נצנצים",
+  "אני באתי לצעוק ולנצח – ולבשתי עקבים לשניהם",
+  "אם את לא יכולה לאכול פיצה ולרקוד בבגדי פייטים, מה הטעם בחיים?",
+  "אני לא אובר–הטופ, אני פשוט מעל הטופ",
 
-  // About loneliness and isolation
-  "אני לבד בעולם מלא אנשים", // I'm alone in a world full of people
-  "הבדידות שלי צועקת בשקט", // My loneliness screams in silence
-  "אף אחד לא מבין את הסבל שלי", // No one understands my suffering
-  "אני רוח רפאים בחיים שלי", // I'm a ghost in my own life
-  "העולם ממשיך והלב שלי עומד", // The world keeps going and my heart stands still
+  "אני לא אובד, אני פשוט עושה סיבוב קווירי",
+  "אם נולדתי לזה, כנראה שנולדתי לנצוץ",
+  "לא בחרתי להיות הומו, בחרתי להיות איקוני",
+  "אני לא דרמטי, אני פשוט מופע בברודווי",
+  "כשהחיים נותנים לי לימונים – אני עושה מהם לוק בגוון צהוב נועז",
 
-  // About emptiness and numbness
-  "אני ריק מבפנים כמו בית נטוש", // I'm empty inside like an abandoned house
-  "החיים שלי הם סרט בשחור לבן", // My life is a black and white movie
-  "אני מת מבפנים אבל חי מבחוץ", // I'm dead inside but alive outside
-  "הרגשות שלי נמסו כמו שלג", // My feelings melted like snow
-  "אני צל של מי שהייתי פעם", // I'm a shadow of who I once was
+  "הלכתי למכולת – חזרתי עם אקס חדש",
+  "הכוח הגיי שלי גורם לאינטרנט לעבוד מהר יותר",
+  "אני לא צריך אהבה – יש לי פופ, נצנצים וחולצה בלי שרוולים",
+  "השמש זורחת כדי שאני אזרח בה",
+  "כל יום הוא מצעד גאווה, אם אתה מספיק אמיץ",
 
-  // About lost love and heartbreak
-  "אהבת אותי עד שהרסת אותי", // You loved me until you destroyed me
-  "הזיכרונות שלנו הם סכינים בלב", // Our memories are knives in my heart
-  "עזבת אותי עם חתיכות של עצמי", // You left me with pieces of myself
-  "האהבה שלנו מתה אבל אני עדיין חי בה", // Our love died but I still live in it
-  "הלב שלי קבר לאהבה שמתה", // My heart is a grave for dead love
+  "אני לובש שחור כדי שהקשת תבלוט יותר",
+  "מי צריך נסיך כשאני מלכה?",
+  "גם הספה יודעת שאני שוכב רק בסטייל",
+  "הטרנד שלי זה לא להיות טרנדי",
+  "אם אני לא עושה כניסה – אני לא מגיע בכלל",
 
-  // About self-destruction and despair
-  "אני הורס את עצמי כדי להרגיש משהו", // I destroy myself to feel something
-  "הייאוש הוא השפה היחידה שאני מכיר", // Despair is the only language I know
-  "אני טובע באוקיינוס של דמעות שלי", // I'm drowning in an ocean of my own tears
-  "הכאב הוא האמת היחידה שאני יודע", // Pain is the only truth I know
-  "אני נלחם במלחמה נגד עצמי", // I'm fighting a war against myself
-
-  // About masks and hiding
-  "החיוך שלי הוא המסכה הכי טובה שלי", // My smile is my best mask
-  "אני שחקן בתיאטרון של החיים", // I'm an actor in the theater of life
-  "מסתיר את הסערה מאחורי עיניים שקטות", // Hiding the storm behind quiet eyes
-  "אני מתחזה לבריא בעולם חולה", // I pretend to be healthy in a sick world
-  "לובש פנים שמחות על לב עצוב", // Wearing a happy face over a sad heart
-
-  // About time and memories
-  "הזמן לא מרפא, הוא רק מטשטש", // Time doesn't heal, it just blurs
-  "אני חי בעבר שלא יחזור", // I live in a past that won't return
-  "כל יום הוא עוד יום להישרד", // Every day is another day to survive
-  "הזיכרונות הם כלא שבניתי לעצמי", // Memories are a prison I built for myself
-  "אתמול מת, מחר לא נולד, היום אני גוסס", // Yesterday died, tomorrow wasn't born, today I'm dying
-
-  // About society and alienation
-  "אני זר בעולם שלא בחרתי", // I'm a stranger in a world I didn't choose
-  "החברה דוחה אותי כמו נגיף", // Society rejects me like a virus
-  "אני פרח שגדל באספלט", // I'm a flower growing in asphalt
-  "העולם יפה מדי בשביל הכאב שלי", // The world is too beautiful for my pain
-  "אני שונה, אני שבור, אני חי" // I'm different, I'm broken, I'm alive
+  "אני לא ביישן, אני רק אייקון בהמתנה",
+  "אם הייתי מטאטא – הייתי ממריא",
+  "אני גיי כמו שישי בבוקר בשוק הכרמל",
+  "מנסה להיות צנוע, אבל הארון כבר התרסק מזמן",
+  "אני קווירי, אני מהמם, ואני תמיד מגיע באיחור אופנתי"
 ];
 
 let index = 0;
@@ -78,7 +52,7 @@ class InteractiveEvent extends BaseEvent<"messageCreate"> {
   public async execute(client: Client<true>, ...args: ClientEvents["messageCreate"]): Promise<void> {
     const [message] = args;
     if (message.mentions.members?.has(client.user.id)) {
-      message.channel.send(emoSentencesHebrew[++index % emoSentencesHebrew.length]);
+      message.channel.send(gayFunnySentencesHebrew[++index % gayFunnySentencesHebrew.length]);
     }
   }
 }
