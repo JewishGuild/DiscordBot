@@ -37,6 +37,14 @@ export class AnnouncementService {
     return Boolean(removedFlag);
   }
 
+  public static async editAnnouncement(name: string, ...args: Partial<Announcement>[]) {
+    const announcement = (await AnnouncementsCollection.getInstance().editAnnouncement(name, ...args)) as Announcement;
+    if (!announcement) throw new Error("Announcement not found");
+
+    RootJob.removeJob(name);
+    RootJob.addJob(new AnnouncementJob(announcement));
+  }
+
   public static async getAllAnnouncements() {
     return await AnnouncementsCollection.getInstance().getAllAnnouncements();
   }

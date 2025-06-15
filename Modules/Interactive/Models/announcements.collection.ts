@@ -23,8 +23,8 @@ export class AnnouncementsCollection extends BaseCollection<AnnouncementEntity> 
     return this.insert(entry);
   }
 
-  public async editAnnouncement(id: Snowflake, ...args: Partial<Announcement>[]) {
-    return this.update({ id }, Object.assign({}, ...args));
+  public async editAnnouncement(name: string, ...args: Partial<Announcement>[]) {
+    return this.update({ name }, Object.assign({}, ...args));
   }
 
   public async removeAnnouncement(name: string) {

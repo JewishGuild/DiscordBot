@@ -4,7 +4,7 @@ import { GeneralUtilities } from "./general.utilities.js";
 export class InteractionUtilities {
   public static async fadeReply(interaction: ChatInputCommandInteraction, options: string | MessagePayload | InteractionReplyOptions) {
     const message = await interaction.reply(options);
-    await GeneralUtilities.sleep(15000); // wait 3 seconds
+    await GeneralUtilities.sleep(15000); // wait 15 seconds
     await message.delete();
   }
 }

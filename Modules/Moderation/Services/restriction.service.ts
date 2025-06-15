@@ -1,11 +1,12 @@
-import { GuildMember, NonThreadGuildBasedChannel, Snowflake } from "discord.js";
-import { RestrictionChannels, RestrictionDurations, RestrictionRoles } from "../Config/restriction.config.js";
+import { GuildMember, NonThreadGuildBasedChannel, Snowflake, User } from "discord.js";
+import { muteDmFormatter, RestrictionChannels, RestrictionDurations, RestrictionRoles, warnDmFormatter } from "../Config/restriction.config.js";
 import { MutedMember } from "../Types/mutes.types.js";
 import { MutedMemberCollection } from "../Models/mutes.collection.js";
 import { Warning } from "../Types/warns.types.js";
 import { WarnsCollection } from "../Models/warns.collection.js";
 import { maxWarningThreshHold, minWarningThreshHold, warnAmount } from "../Config/warn.config.js";
 import { Bot } from "../.../../../../Core/Bot/bot.js";
+import { DirectMessageUtilities } from "../../../Utilities/direct-message.utilities.js";
 
 export class RestrictionService {
   public static async setChannelMutedPreset(channel: NonThreadGuildBasedChannel) {
@@ -30,7 +31,8 @@ export class RestrictionService {
       timestamp: Date.now(),
       permanent: duration == RestrictionDurations.Permanent
     };
-    return await MutedMemberCollection.getInstance().upsertMutedMember(member.id, mutedMember);
+    await MutedMemberCollection.getInstance().upsertMutedMember(member.id, mutedMember);
+    await DirectMessageUtilities.sendDM(member.user, muteDmFormatter(duration, reason));
   }
 
   public static async revokeMute(member: GuildMember) {
@@ -47,14 +49,17 @@ export class RestrictionService {
     await MutedMemberCollection.getInstance().deleteMutedMember(id);
   }
 
-  public static async warnUser(id: Snowflake, moderatorId: Snowflake, reason: string) {
+  public static async warnUser(user: User, moderatorId: Snowflake, reason: string) {
     const warning: Warning = {
-      id,
+      id: user.id,
       moderatorId,
       reason,
       timestamp: Date.now()
     };
-    return await WarnsCollection.getInstance().insertWarning(warning);
+
+    const warningEntity = await WarnsCollection.getInstance().insertWarning(warning);
+    await DirectMessageUtilities.sendDM(user, warnDmFormatter(reason));
+    return warningEntity;
   }
 
   public static async unWarnUser(id: string) {

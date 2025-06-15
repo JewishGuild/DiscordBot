@@ -20,7 +20,7 @@ class AddSubCommand extends BaseSubCommand {
 
     /* Adds the warning */
     const embed = this.constructEmbed(user.id, interaction.user.id, reason);
-    await RestrictionService.warnUser(user.id, interaction.user.id, reason);
+    await RestrictionService.warnUser(user, interaction.user.id, reason);
     InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
     LoggerUtilities.log({ title: "Member Warned", embed, user: interaction.user });
 
