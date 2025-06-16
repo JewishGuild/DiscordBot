@@ -30,9 +30,9 @@ class EditSubCommand extends BaseSubCommand {
 
   private constructEmbed({ name, message, cycle, channel }: Partial<Announcement>) {
     const fields: APIEmbedField[] = [
-      channel && { name: "Channel", value: `<#${channel}>`, inline: true },
-      message && { name: "Message", value: message, inline: true },
-      cycle && { name: "Cycle", value: resolveAnnouncementCycleName(cycle), inline: true }
+      channel && { name: "Channel", value: `<#${channel}>` },
+      message && { name: "Message", value: message },
+      cycle && { name: "Cycle", value: resolveAnnouncementCycleName(cycle) }
     ].filter(Boolean) as APIEmbedField[];
 
     return new Embed(
