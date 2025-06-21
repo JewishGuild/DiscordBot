@@ -8,13 +8,22 @@ import { unmuteCommand } from "../../Modules/Moderation/Commands/unmute.command.
 import { warnCommand } from "../../Modules/Moderation/Commands/Warn/warn.command.js";
 import { clearCommand } from "../../Modules/Moderation/Commands/clear.command.js";
 import { announcementCommand } from "../../Modules/Interactive/Commands/Announcement/announcement.command.js";
+import { roleCommand } from "../../Modules/Extra/Commands/Role/role.command.js";
 
 /**
  * Centralized commands manager that registers all commands dynamically.
  */
 export class RootCommand {
   private static readonly logger = new ConsoleUtilities("Command", "Root");
-  private static commandsCache: Array<BaseCommand> = [applyMutedPresetCommand, muteCommand, unmuteCommand, warnCommand, clearCommand, announcementCommand];
+  private static commandsCache: Array<BaseCommand> = [
+    applyMutedPresetCommand,
+    muteCommand,
+    unmuteCommand,
+    warnCommand,
+    clearCommand,
+    announcementCommand,
+    roleCommand
+  ];
 
   public static async init(client: Client<true>): Promise<void> {
     this.logger.log("Initializing commands...");
@@ -31,8 +40,8 @@ export class RootCommand {
 
   public static getCommandsCache() {
     return this.commandsCache.reduce((acc, command) => {
-      acc[command.name] = command.execute.bind(command);
+      acc[command.name] = command;
       return acc;
-    }, {} as Record<string, Function>);
+    }, {} as Record<string, BaseCommand>);
   }
 }

@@ -19,7 +19,7 @@ class InteractionEvent extends BaseEvent<"interactionCreate"> {
       this.logger.log(`Command ${commandIdentifier} has been triggered`);
 
       try {
-        await RootCommand.getCommandsCache()[interaction.commandName](client, interaction);
+        await RootCommand.getCommandsCache()[interaction.commandName].execute(client, interaction);
         this.logger.success(`Command ${commandIdentifier} has been completed`);
       } catch (error) {
         this.logger.error(`Command ${commandIdentifier} has crashed, info: ${error}`);
