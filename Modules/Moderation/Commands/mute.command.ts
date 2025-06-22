@@ -11,7 +11,7 @@ import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
 
 class MuteCommand extends BaseCommand {
   constructor() {
-    super();
+    super("moderation");
   }
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {

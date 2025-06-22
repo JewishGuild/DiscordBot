@@ -9,7 +9,7 @@ import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
 
 class UnmuteCommand extends BaseCommand {
   constructor() {
-    super();
+    super("moderation");
   }
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {

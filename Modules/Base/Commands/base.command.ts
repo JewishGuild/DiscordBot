@@ -1,6 +1,8 @@
 import { Client, ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 import { ConsoleUtilities } from "../../../Utilities/console.utilities.js";
 
+export type CommandCategory = "moderation" | "extra" | "info" | "interactive";
+
 /**
  * Base class for Discord commands.
  * Provides structured logging and enforces command execution rules.
@@ -12,13 +14,17 @@ export abstract class BaseCommand {
   /** The name of the command, extracted from {@link SlashCommandBuilder}. */
   public readonly name: string;
 
+  /** The category of the command */
+  public readonly category: CommandCategory;
+
   /** Logger instance for structured command logging using {@link ConsoleUtilities}. */
   protected readonly logger: ConsoleUtilities;
 
   /** Initializes a new command. */
-  constructor() {
+  constructor(category: CommandCategory) {
     this.data = this.buildData();
     this.name = this.data.name;
+    this.category = category;
     this.logger = new ConsoleUtilities("Command", this.name);
   }
 

@@ -8,7 +8,7 @@ import { previewSubCommand } from "./preview.sub-command.js";
 
 class AnnouncementCommand extends BaseCommand {
   constructor() {
-    super();
+    super("interactive");
   }
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {

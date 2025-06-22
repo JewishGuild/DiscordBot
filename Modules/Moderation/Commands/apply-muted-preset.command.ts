@@ -5,7 +5,7 @@ import { RestrictionService } from "../Services/restriction.service.js";
 
 class ApplyMutedPresetCommand extends BaseCommand {
   constructor() {
-    super();
+    super("moderation");
   }
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {

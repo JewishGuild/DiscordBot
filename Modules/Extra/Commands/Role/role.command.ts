@@ -5,7 +5,7 @@ import { removeSubCommand } from "./remove.sub-command.js";
 
 class RoleCommand extends BaseCommand {
   constructor() {
-    super();
+    super("extra");
   }
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {

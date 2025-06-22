@@ -9,6 +9,7 @@ import { warnCommand } from "../../Modules/Moderation/Commands/Warn/warn.command
 import { clearCommand } from "../../Modules/Moderation/Commands/clear.command.js";
 import { announcementCommand } from "../../Modules/Interactive/Commands/Announcement/announcement.command.js";
 import { roleCommand } from "../../Modules/Extra/Commands/Role/role.command.js";
+import { infoCommand } from "../../Modules/Info/Commands/info.command.js";
 
 /**
  * Centralized commands manager that registers all commands dynamically.
@@ -22,7 +23,8 @@ export class RootCommand {
     warnCommand,
     clearCommand,
     announcementCommand,
-    roleCommand
+    roleCommand,
+    infoCommand
   ];
 
   public static async init(client: Client<true>): Promise<void> {

@@ -14,7 +14,12 @@ export const config: EmbedConfig = {
     state: false,
     value: {
       text: `Made by the development team`,
-      iconURL: "https://cdn.discordapp.com/avatars/1376543468897308765/7fc7f440986eba5c8c5b3e1160d4b2c5.webp"
+      iconURL: "https://media.discordapp.net/attachments/978771506660257833/1385397411475882095/image.png"
     }
+  },
+  thumbnail: {
+    state: false,
+    // @ts-ignore
+    value: "https://media.discordapp.net/attachments/978771506660257833/1385397411475882095/image.png"
   }
 };

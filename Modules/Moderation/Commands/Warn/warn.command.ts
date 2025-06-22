@@ -7,7 +7,7 @@ import { listSubCommand } from "./list.sub-command.js";
 
 class WarnCommand extends BaseCommand {
   constructor() {
-    super();
+    super("moderation");
   }
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
