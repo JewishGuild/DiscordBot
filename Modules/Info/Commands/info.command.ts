@@ -1,6 +1,7 @@
 import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, SlashCommandBuilder, SlashCommandSubcommandBuilder } from "discord.js";
 import { BaseCommand } from "../../Base/Commands/base.command.js";
 import { commandsSubCommand } from "./commands.sub-command.js";
+import { generalSubCommand } from "./general.sub-command.js";
 
 class InfoCommand extends BaseCommand {
   constructor() {
@@ -15,6 +16,9 @@ class InfoCommand extends BaseCommand {
       case "commands":
         await commandsSubCommand.execute(client, interaction);
         break;
+      case "general":
+        await generalSubCommand.execute(client, interaction);
+        break;
     }
   }
 
@@ -23,6 +27,7 @@ class InfoCommand extends BaseCommand {
       .setName("info")
       .setDescription("Information regarding the bot")
       .addSubcommand(commandsSubCommand.data)
+      .addSubcommand(generalSubCommand.data)
       .setIntegrationTypes([ApplicationIntegrationType.GuildInstall]) as SlashCommandBuilder;
   }
 }
