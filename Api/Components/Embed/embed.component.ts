@@ -8,7 +8,8 @@ import {
   EmbedData,
   InteractionCollector,
   InteractionResponse,
-  Message
+  Message,
+  Snowflake
 } from "discord.js";
 import { config } from "./embed.config.js";
 import { GeneralUtilities } from "../../../Utilities/general.utilities.js";
@@ -202,7 +203,7 @@ export class Embed extends EmbedBuilder {
    * Creates and manages the pagination collector
    * Implements timeout-based cleanup with exponential backoff for performance
    */
-  public async startPagination(message: Message | InteractionResponse<boolean>): Promise<InteractionCollector<ButtonInteraction> | null> {
+  public async startPagination(message: Message | InteractionResponse<boolean>, id: Snowflake): Promise<InteractionCollector<ButtonInteraction> | null> {
     if (!this.paginationState) return null;
 
     const collector = message.createMessageComponentCollector({
@@ -214,6 +215,7 @@ export class Embed extends EmbedBuilder {
     });
 
     collector.on("collect", async (interaction: ButtonInteraction) => {
+      if (interaction.user.id !== id) return;
       let updated = false;
 
       switch (interaction.customId) {
