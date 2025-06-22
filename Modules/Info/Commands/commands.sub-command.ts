@@ -25,7 +25,7 @@ class CommandsSubCommand extends BaseSubCommand {
     const message = await interaction.reply({ embeds: [paginatedEmbed], components });
 
     if (needsPagination) {
-      await paginatedEmbed.startPagination(message);
+      await paginatedEmbed.startPagination(message, interaction.user.id);
     }
   }
 
