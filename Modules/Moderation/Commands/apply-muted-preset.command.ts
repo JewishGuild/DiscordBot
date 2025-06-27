@@ -10,7 +10,6 @@ class ApplyMutedPresetCommand extends BaseCommand {
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
     if (!interaction.guild) return;
-    interaction.reply({ content: "Processing...", flags: "Ephemeral" });
 
     const channelApi = new ChannelApi(interaction.guild);
     const channels = await channelApi.getAllChannels();

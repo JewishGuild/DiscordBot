@@ -19,6 +19,7 @@ class InteractionEvent extends BaseEvent<"interactionCreate"> {
       this.logger.log(`Command ${commandIdentifier} has been triggered`);
 
       try {
+        await interaction.reply({ content: "Processing...", flags: "Ephemeral" });
         await RootCommand.getCommandsCache()[interaction.commandName].execute(client, interaction);
         this.logger.success(`Command ${commandIdentifier} has been completed`);
       } catch (error) {

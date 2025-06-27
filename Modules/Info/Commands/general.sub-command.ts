@@ -5,7 +5,7 @@ import { Bot } from "../../../Core/Bot/bot.js";
 
 class GeneralSubCommand extends BaseSubCommand {
   public async execute(client: Client, interaction: ChatInputCommandInteraction) {
-    await interaction.reply({ embeds: [this.constructEmbed(client)] });
+    await interaction.followUp({ embeds: [this.constructEmbed(client)] });
   }
 
   protected buildData(): SlashCommandSubcommandBuilder {

@@ -10,7 +10,7 @@ class ListSubCommand extends BaseSubCommand {
     /* Lists the announcements */
     const announcements = await AnnouncementService.getAllAnnouncements();
     if (announcements.length === 0) throw new Error("There are no announcements");
-    interaction.reply({ embeds: [this.constructEmbed(announcements)] });
+    await interaction.followUp({ embeds: [this.constructEmbed(announcements)] });
   }
 
   private constructEmbed(announcements: Array<AnnouncementEntity>) {

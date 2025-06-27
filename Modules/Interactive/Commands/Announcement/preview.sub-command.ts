@@ -10,7 +10,7 @@ class PreviewSubCommand extends BaseSubCommand {
     /* Gets the announcement */
     const announcementEntity = await AnnouncementsCollection.getInstance().getOneByQuery({ name });
     if (!announcementEntity) throw new Error("Announcement not found");
-    await interaction.reply({ content: `Announcement preview: \n${announcementEntity?.message}` });
+    await interaction.followUp({ content: `Announcement preview: \n${announcementEntity?.message}` });
   }
 
   protected buildData(): SlashCommandSubcommandBuilder {

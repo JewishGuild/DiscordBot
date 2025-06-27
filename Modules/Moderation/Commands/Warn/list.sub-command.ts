@@ -12,7 +12,7 @@ class ListSubCommand extends BaseSubCommand {
     /* Lists the warnings */
     const warnings = await RestrictionService.getUserWarnings(user.id);
     if (warnings.length === 0) throw new Error("User doesn't have any warnings");
-    interaction.reply({ embeds: [this.constructEmbed(user.tag, warnings)] });
+    await interaction.followUp({ embeds: [this.constructEmbed(user.tag, warnings)] });
   }
 
   private constructEmbed(userTag: string, warnings: Array<WarningEntity>) {
