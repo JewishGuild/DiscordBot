@@ -22,7 +22,7 @@ class CommandsSubCommand extends BaseSubCommand {
 
     const embed = this.constructEmbed(commands, category);
     const { embed: paginatedEmbed, needsPagination, components } = embed.createPaginated(ITEMS_PER_PAGE);
-    const message = await interaction.followUp({ embeds: [paginatedEmbed], components });
+    const message = await interaction.editReply({ embeds: [paginatedEmbed], components });
 
     if (needsPagination) {
       await paginatedEmbed.startPagination(message, interaction.user.id);

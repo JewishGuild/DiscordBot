@@ -1,4 +1,4 @@
-import { Client, ChatInputCommandInteraction, SlashCommandSubcommandBuilder, Snowflake, Colors } from "discord.js";
+import { Client, ChatInputCommandInteraction, SlashCommandSubcommandBuilder } from "discord.js";
 import { BaseSubCommand } from "../../../Base/Commands/base.sub-command.js";
 import { RestrictionService } from "../../Services/restriction.service.js";
 import { Embed } from "../../../../Api/Components/Embed/embed.component.js";
@@ -12,7 +12,7 @@ class ListSubCommand extends BaseSubCommand {
     /* Lists the warnings */
     const warnings = await RestrictionService.getUserWarnings(user.id);
     if (warnings.length === 0) throw new Error("User doesn't have any warnings");
-    await interaction.followUp({ embeds: [this.constructEmbed(user.tag, warnings)] });
+    await interaction.editReply({ embeds: [this.constructEmbed(user.tag, warnings)] });
   }
 
   private constructEmbed(userTag: string, warnings: Array<WarningEntity>) {
