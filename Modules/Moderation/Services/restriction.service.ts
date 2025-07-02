@@ -7,6 +7,7 @@ import { WarnsCollection } from "../Models/warns.collection.js";
 import { maxWarningThreshHold, minWarningThreshHold, warnAmount } from "../Config/warn.config.js";
 import { Bot } from "../.../../../../Core/Bot/bot.js";
 import { DirectMessageUtilities } from "../../../Utilities/direct-message.utilities.js";
+import { UserMetricsCollection } from "../Models/user-metrics.collection.js";
 
 export class RestrictionService {
   public static async setChannelMutedPreset(channel: NonThreadGuildBasedChannel) {
@@ -32,6 +33,7 @@ export class RestrictionService {
       permanent: duration == RestrictionDurations.Permanent
     };
     await MutedMemberCollection.getInstance().upsertMutedMember(member.id, mutedMember);
+    await UserMetricsCollection.getInstance().addMuteDuration(member.id, duration);
     await DirectMessageUtilities.sendDM(member.user, muteDmFormatter(duration, reason));
   }
 
@@ -58,6 +60,7 @@ export class RestrictionService {
     };
 
     const warningEntity = await WarnsCollection.getInstance().insertWarning(warning);
+    await UserMetricsCollection.getInstance().addWarning(user.id);
     await DirectMessageUtilities.sendDM(user, warnDmFormatter(reason));
     return warningEntity;
   }
