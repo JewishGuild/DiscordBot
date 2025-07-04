@@ -1,9 +1,9 @@
 import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, SlashCommandBuilder, SlashCommandSubcommandBuilder } from "discord.js";
-import { BaseCommand } from "../../Base/Commands/base.command.js";
+import { BaseSlashCommand } from "../../Base/Commands/base.command.js";
 import { commandsSubCommand } from "./commands.sub-command.js";
 import { generalSubCommand } from "./general.sub-command.js";
 
-class InfoCommand extends BaseCommand {
+class InfoCommand extends BaseSlashCommand {
   constructor() {
     super("info");
   }
@@ -22,7 +22,7 @@ class InfoCommand extends BaseCommand {
     }
   }
 
-  protected buildData(): SlashCommandBuilder {
+  protected createSlashCommand(): SlashCommandBuilder {
     return new SlashCommandBuilder()
       .setName("info")
       .setDescription("Information regarding the bot")

@@ -1,9 +1,9 @@
 import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
-import { BaseCommand } from "../../Base/Commands/base.command.js";
+import { BaseSlashCommand } from "../../Base/Commands/base.command.js";
 import { ChannelApi } from "../../../Api/Guild/Channel/channel.api.js";
 import { RestrictionService } from "../Services/restriction.service.js";
 
-class ApplyMutedPresetCommand extends BaseCommand {
+class ApplyMutedPresetCommand extends BaseSlashCommand {
   constructor() {
     super("moderation");
   }
@@ -19,7 +19,7 @@ class ApplyMutedPresetCommand extends BaseCommand {
     }
   }
 
-  protected buildData(): SlashCommandBuilder {
+  protected createSlashCommand(): SlashCommandBuilder {
     return new SlashCommandBuilder()
       .setName("apply-muted-preset")
       .setDescription("Applies all the channels with the mute preset")

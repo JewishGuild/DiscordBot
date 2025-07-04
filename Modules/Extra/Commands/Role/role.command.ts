@@ -1,9 +1,9 @@
 import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, SlashCommandBuilder } from "discord.js";
-import { BaseCommand } from "../../../Base/Commands/base.command.js";
+import { BaseSlashCommand } from "../../../Base/Commands/base.command.js";
 import { addSubCommand } from "./add.sub-command.js";
 import { removeSubCommand } from "./remove.sub-command.js";
 
-class RoleCommand extends BaseCommand {
+class RoleCommand extends BaseSlashCommand {
   constructor() {
     super("extra");
   }
@@ -22,7 +22,7 @@ class RoleCommand extends BaseCommand {
     }
   }
 
-  protected buildData(): SlashCommandBuilder {
+  protected createSlashCommand(): SlashCommandBuilder {
     return new SlashCommandBuilder()
       .setName("role")
       .setDescription("Special role manager")

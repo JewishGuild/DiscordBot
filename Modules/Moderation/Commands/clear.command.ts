@@ -12,13 +12,13 @@ import {
   Snowflake,
   TextChannel
 } from "discord.js";
-import { BaseCommand } from "../../Base/Commands/base.command.js";
+import { BaseSlashCommand } from "../../Base/Commands/base.command.js";
 import { SupportService } from "../Services/support.service.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
 import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
 import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
 
-class ClearCommand extends BaseCommand {
+class ClearCommand extends BaseSlashCommand {
   constructor() {
     super("moderation");
   }
@@ -128,7 +128,7 @@ class ClearCommand extends BaseCommand {
     return emojiMap[extension || ""] || "📎";
   }
 
-  protected buildData(): SlashCommandBuilder {
+  protected createSlashCommand(): SlashCommandBuilder {
     return new SlashCommandBuilder()
       .setName("clear")
       .setDescription("Deletes 1-100 messages")

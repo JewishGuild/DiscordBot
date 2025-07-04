@@ -1,12 +1,12 @@
 import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
-import { BaseCommand } from "../../../Base/Commands/base.command.js";
+import { BaseSlashCommand } from "../../../Base/Commands/base.command.js";
 import { addSubCommand } from "./add.sub-command.js";
 import { removeSubCommand } from "./remove.sub-command.js";
 import { listSubCommand } from "./list.sub-command.js";
 import { editSubCommand } from "./edit.sub-command.js";
 import { previewSubCommand } from "./preview.sub-command.js";
 
-class AnnouncementCommand extends BaseCommand {
+class AnnouncementCommand extends BaseSlashCommand {
   constructor() {
     super("interactive");
   }
@@ -33,7 +33,7 @@ class AnnouncementCommand extends BaseCommand {
     }
   }
 
-  protected buildData(): SlashCommandBuilder {
+  protected createSlashCommand(): SlashCommandBuilder {
     return new SlashCommandBuilder()
       .setName("announcement")
       .setDescription("Announcement manager")

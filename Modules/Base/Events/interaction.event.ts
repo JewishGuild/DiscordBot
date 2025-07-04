@@ -13,8 +13,8 @@ class InteractionEvent extends BaseEvent<"interactionCreate"> {
   public async execute(client: Client<true>, ...args: ClientEvents["interactionCreate"]): Promise<void> {
     const [interaction] = args;
 
-    if (interaction.isChatInputCommand()) {
-      const subcommand = interaction.options.getSubcommand(false);
+    if (interaction.isChatInputCommand() || interaction.isContextMenuCommand()) {
+      const subcommand = interaction.isChatInputCommand() ? interaction.options.getSubcommand(false) : null;
       const commandIdentifier = interaction.commandName + (subcommand ? ` (${subcommand})` : "");
       this.logger.log(`Command ${commandIdentifier} has been triggered`);
 

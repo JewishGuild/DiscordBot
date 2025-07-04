@@ -1,5 +1,5 @@
 import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, GuildMember, PermissionFlagsBits, SlashCommandBuilder, Snowflake } from "discord.js";
-import { BaseCommand } from "../../Base/Commands/base.command.js";
+import { BaseSlashCommand } from "../../Base/Commands/base.command.js";
 import { SupportService } from "../Services/support.service.js";
 import { MemberService } from "../../../Api/Guild/Member/member.service.js";
 import { muteDurations, RestrictionDurations } from "../Config/restriction.config.js";
@@ -9,7 +9,7 @@ import { Embed } from "../../../Api/Components/Embed/embed.component.js";
 import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
 import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
 
-class MuteCommand extends BaseCommand {
+class MuteCommand extends BaseSlashCommand {
   constructor() {
     super("moderation");
   }
@@ -43,7 +43,7 @@ class MuteCommand extends BaseCommand {
     });
   }
 
-  protected buildData(): SlashCommandBuilder {
+  protected createSlashCommand(): SlashCommandBuilder {
     return new SlashCommandBuilder()
       .setName("mute")
       .setDescription("Mutes a member temporarily")

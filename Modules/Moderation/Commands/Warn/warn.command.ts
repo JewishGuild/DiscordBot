@@ -1,11 +1,11 @@
 import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, GuildMember, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
-import { BaseCommand } from "../../../Base/Commands/base.command.js";
+import { BaseSlashCommand } from "../../../Base/Commands/base.command.js";
 import { addSubCommand } from "./add.sub-command.js";
 import { removeSubCommand } from "./remove.sub-command.js";
 import { SupportService } from "../../Services/support.service.js";
 import { listSubCommand } from "./list.sub-command.js";
 
-class WarnCommand extends BaseCommand {
+class WarnCommand extends BaseSlashCommand {
   constructor() {
     super("moderation");
   }
@@ -28,7 +28,7 @@ class WarnCommand extends BaseCommand {
     }
   }
 
-  protected buildData(): SlashCommandBuilder {
+  protected createSlashCommand(): SlashCommandBuilder {
     return new SlashCommandBuilder()
       .setName("warn")
       .setDescription("Warning manager")

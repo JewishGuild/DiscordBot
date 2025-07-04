@@ -2,6 +2,7 @@ import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { ClientApi } from "../../Api/Client/client.api.js";
 import { RootEvent } from "./root.event.js";
 import { RootCommand } from "./root.command.js";
+import { GeneralUtilities } from "../../Utilities/general.utilities.js";
 
 /**
  * Singleton class for managing the Discord bot instance.
@@ -68,24 +69,7 @@ export class Bot {
    * @returns The bot's uptime formatted duration.
    */
   public getUptime() {
-    const uptimeMs = Date.now() - this.loginTimestamp;
-
-    const totalSeconds = Math.floor(uptimeMs / 1000);
-    const totalMinutes = Math.floor(totalSeconds / 60);
-    const totalHours = Math.floor(totalMinutes / 60);
-    const days = Math.floor(totalHours / 24);
-
-    const hours = totalHours % 24;
-    const minutes = totalMinutes % 60;
-    const seconds = totalSeconds % 60;
-
-    const parts = [];
-    if (days > 0) parts.push(`${days}d`);
-    if (hours > 0) parts.push(`${hours}h`);
-    if (minutes > 0) parts.push(`${minutes}m`);
-    if (seconds > 0 || parts.length === 0) parts.push(`${seconds}s`);
-
-    return parts.join(" ");
+    return GeneralUtilities.formatTimeDifference(this.loginTimestamp);
   }
 
   /**

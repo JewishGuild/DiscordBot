@@ -2,11 +2,14 @@ import {
   ApplicationCommandDataResolvable,
   ApplicationCommandResolvable,
   RESTPostAPIChatInputApplicationCommandsJSONBody,
+  RESTPostAPIContextMenuApplicationCommandsJSONBody,
   Snowflake,
   ApplicationCommandManager,
   Client
 } from "discord.js";
 import { ApplicationApi } from "../application.api.js";
+
+export type Commands = (RESTPostAPIChatInputApplicationCommandsJSONBody | RESTPostAPIContextMenuApplicationCommandsJSONBody)[];
 
 /**
  * API for managing Discord application command.
@@ -33,7 +36,7 @@ export class CommandApi extends ApplicationApi {
    * @param guildId - (Optional) The ID of the guild to register commands in. If omitted, commands are set globally.
    * @returns A promise resolving to the updated list of commands.
    */
-  public async setCommands(commands: RESTPostAPIChatInputApplicationCommandsJSONBody[], guildId?: Snowflake) {
+  public async setCommands(commands: Commands, guildId?: Snowflake) {
     if (guildId) {
       return this.commandManager.set(commands, guildId);
     }

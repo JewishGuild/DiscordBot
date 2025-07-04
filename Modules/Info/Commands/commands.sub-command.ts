@@ -1,7 +1,7 @@
 import { Client, ChatInputCommandInteraction, SlashCommandSubcommandBuilder, APIEmbedField, APIApplicationCommandOptionChoice } from "discord.js";
 import { BaseSubCommand } from "../../Base/Commands/base.sub-command.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
-import { BaseCommand, CommandCategory } from "../../Base/Commands/base.command.js";
+import { BaseCommand, BaseSlashCommand, CommandCategory } from "../../Base/Commands/base.command.js";
 import { RootCommand } from "../../../Core/Bot/root.command.js";
 import { GeneralUtilities } from "../../../Utilities/general.utilities.js";
 import { GroupedCommands } from "../Types/info.types.js";
@@ -53,12 +53,12 @@ class CommandsSubCommand extends BaseSubCommand {
     );
   }
 
-  private isParentCommand(command: BaseCommand) {
+  private isParentCommand(command: BaseSlashCommand) {
     return command.data.options.some((option) => option instanceof SlashCommandSubcommandBuilder);
   }
 
   private getCommandsByCategory(category: CommandCategory): Array<APIEmbedField> {
-    const commandsCache = RootCommand.getCommandsCache();
+    const commandsCache = RootCommand.getSlashCommandsCache();
     const commands: Array<APIEmbedField> = [];
 
     for (const [name, command] of Object.entries(commandsCache)) {
@@ -70,7 +70,7 @@ class CommandsSubCommand extends BaseSubCommand {
   }
 
   private getAllCommandsGrouped(): Array<APIEmbedField> {
-    const commandsCache = RootCommand.getCommandsCache();
+    const commandsCache = RootCommand.getSlashCommandsCache();
     const groupedCommands = this.initializeGroupedCommands();
 
     // Group commands by category
@@ -114,7 +114,7 @@ class CommandsSubCommand extends BaseSubCommand {
     return commands;
   }
 
-  private extractCommandFields(name: string, command: BaseCommand): Array<APIEmbedField> {
+  private extractCommandFields(name: string, command: BaseSlashCommand): Array<APIEmbedField> {
     if (this.isParentCommand(command)) {
       return command.data.options.map((option) => {
         const formattedOption = option.toJSON();
@@ -133,7 +133,7 @@ class CommandsSubCommand extends BaseSubCommand {
     ];
   }
 
-  private shouldSkipCommand(command: BaseCommand, category?: CommandCategory): boolean {
+  private shouldSkipCommand(command: BaseSlashCommand, category?: CommandCategory): boolean {
     if (category && category !== command.category) return true;
     return false;
   }

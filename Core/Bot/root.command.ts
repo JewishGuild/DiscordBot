@@ -1,5 +1,5 @@
 import { Client } from "discord.js";
-import { BaseCommand } from "../../Modules/Base/Commands/base.command.js";
+import { BaseCommand, BaseSlashCommand, CommandBuilder } from "../../Modules/Base/Commands/base.command.js";
 import { ConsoleUtilities } from "../../Utilities/console.utilities.js";
 import { CommandApi } from "../../Api/Client/Application/Commands/commands.api.js";
 import { applyMutedPresetCommand } from "../../Modules/Moderation/Commands/apply-muted-preset.command.js";
@@ -10,13 +10,15 @@ import { clearCommand } from "../../Modules/Moderation/Commands/clear.command.js
 import { announcementCommand } from "../../Modules/Interactive/Commands/Announcement/announcement.command.js";
 import { roleCommand } from "../../Modules/Extra/Commands/Role/role.command.js";
 import { infoCommand } from "../../Modules/Info/Commands/info.command.js";
+import { permanentMuteCommand } from "../../Modules/Moderation/Commands/permanent-mute.command.js";
+import { purgeMessages } from "../../Modules/Moderation/Commands/purge-messages.command.js";
 
 /**
  * Centralized commands manager that registers all commands dynamically.
  */
 export class RootCommand {
   private static readonly logger = new ConsoleUtilities("Command", "Root");
-  private static commandsCache: Array<BaseCommand> = [
+  private static commandsCache: Array<BaseCommand<CommandBuilder>> = [
     applyMutedPresetCommand,
     muteCommand,
     unmuteCommand,
@@ -24,7 +26,9 @@ export class RootCommand {
     clearCommand,
     announcementCommand,
     roleCommand,
-    infoCommand
+    infoCommand,
+    permanentMuteCommand,
+    purgeMessages
   ];
 
   public static async init(client: Client<true>): Promise<void> {
@@ -44,6 +48,15 @@ export class RootCommand {
     return this.commandsCache.reduce((acc, command) => {
       acc[command.name] = command;
       return acc;
-    }, {} as Record<string, BaseCommand>);
+    }, {} as Record<string, BaseCommand<CommandBuilder>>);
+  }
+
+  public static getSlashCommandsCache() {
+    return this.commandsCache.reduce((acc, command) => {
+      if (command.isSlashCommand()) {
+        acc[command.name] = command;
+      }
+      return acc;
+    }, {} as Record<string, BaseSlashCommand>);
   }
 }
