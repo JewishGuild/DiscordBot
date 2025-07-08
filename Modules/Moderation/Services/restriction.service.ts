@@ -16,12 +16,27 @@ export class RestrictionService {
     }
   }
 
+  public static async isMemberMuted(id: Snowflake) {
+    return Boolean(await MutedMemberCollection.getInstance().getMutedMemberById(id));
+  }
+
+  public static async ensureMemberNotMuted(id: Snowflake) {
+    const muted = await this.isMemberMuted(id);
+    if (muted) throw new Error("Member is already muted");
+  }
+
+  public static async ensureMemberMuted(id: Snowflake) {
+    const muted = await this.isMemberMuted(id);
+    if (!muted) throw new Error("Member is not muted");
+  }
+
   public static async applyMute(member: GuildMember) {
     await member.roles.add(RestrictionRoles.Muted);
     await member.voice.disconnect();
   }
 
   public static async muteMember(member: GuildMember, moderatorId: Snowflake, duration: number, reason: string) {
+    await this.ensureMemberNotMuted(member.id);
     await this.applyMute(member);
 
     const mutedMember: MutedMember = {
@@ -48,6 +63,7 @@ export class RestrictionService {
       id = member.id;
     } else id = member;
 
+    await this.ensureMemberMuted(id);
     await MutedMemberCollection.getInstance().deleteMutedMember(id);
   }
 
