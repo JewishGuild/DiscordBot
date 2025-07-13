@@ -38,9 +38,15 @@ export class RootCommand {
   }
 
   private static async attachCommands(client: Client<true>) {
-    const commandsApi = new CommandApi(client);
-    const response = await commandsApi.setCommands(this.commandsCache.map((command) => command.data.toJSON()));
+    const commandApi = new CommandApi(client);
+    const entryCommand = await commandApi.getEntryPoint();
+    const commands = this.commandsCache.map((command) => command.data.toJSON());
 
+    if (entryCommand) {
+      commands.unshift(entryCommand.toJSON() as any);
+    }
+
+    const response = await commandApi.setCommands(commands);
     this.logger.success(`Registered commands: ${[...response].map(([, command]) => command.name).join(", ")}`);
   }
 

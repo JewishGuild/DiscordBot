@@ -62,4 +62,13 @@ export class CommandApi extends ApplicationApi {
   public async resetCommands() {
     return this.commandManager.set([]);
   }
+
+  public async fetchCommands() {
+    return this.commandManager.fetch();
+  }
+
+  public async getEntryPoint() {
+    const existingCommands = await this.fetchCommands();
+    return existingCommands.find(({ type, name, integrationTypes }) => type === 4 && name === "launch" && integrationTypes?.includes(1));
+  }
 }
