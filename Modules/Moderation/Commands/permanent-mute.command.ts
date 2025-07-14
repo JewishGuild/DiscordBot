@@ -1,6 +1,5 @@
 import { ApplicationIntegrationType, Client, ContextMenuCommandBuilder, GuildMember, Snowflake, UserContextMenuCommandInteraction } from "discord.js";
 import { BaseUserContextCommand } from "../../Base/Commands/base.command.js";
-import { SupportService } from "../Services/support.service.js";
 import { StaffService } from "../Services/staff.service.js";
 import { RestrictionDurations } from "../Config/restriction.config.js";
 import { RestrictionService } from "../Services/restriction.service.js";
@@ -15,7 +14,7 @@ class PermanentMuteCommand extends BaseUserContextCommand {
 
   public async execute(client: Client, interaction: UserContextMenuCommandInteraction): Promise<void> {
     if (!interaction.guild) return;
-    if (!SupportService.isSupportMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
+    if (!StaffService.isStaffMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
 
     /* Verify validity */
     const member = interaction.targetMember as GuildMember;

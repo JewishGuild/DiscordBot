@@ -2,8 +2,8 @@ import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, GuildM
 import { BaseSlashCommand } from "../../../Base/Commands/base.command.js";
 import { addSubCommand } from "./add.sub-command.js";
 import { removeSubCommand } from "./remove.sub-command.js";
-import { SupportService } from "../../Services/support.service.js";
 import { listSubCommand } from "./list.sub-command.js";
+import { StaffService } from "../../Services/staff.service.js";
 
 class WarnCommand extends BaseSlashCommand {
   constructor() {
@@ -12,7 +12,7 @@ class WarnCommand extends BaseSlashCommand {
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
     if (!interaction.guild) return;
-    if (!SupportService.isSupportMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
+    if (!StaffService.isStaffMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
 
     /* Handle subcommands */
     switch (interaction.options.getSubcommand()) {

@@ -11,13 +11,13 @@ import {
   UserContextMenuCommandInteraction
 } from "discord.js";
 import { BaseUserContextCommand } from "../../Base/Commands/base.command.js";
-import { SupportService } from "../Services/support.service.js";
 import { ChannelService } from "../../../Api/Guild/Channel/channel.service.js";
 import { GeneralUtilities } from "../../../Utilities/general.utilities.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
 import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
 import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
 import { WorkerQueue } from "../../../Utilities/worker-queue.utilities.js";
+import { StaffService } from "../Services/staff.service.js";
 
 interface PurgeResult {
   startStamp: number;
@@ -32,7 +32,7 @@ class PurgeMessages extends BaseUserContextCommand {
 
   public async execute(client: Client, interaction: UserContextMenuCommandInteraction): Promise<void> {
     if (!interaction.guild) return;
-    if (!SupportService.isSupportMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
+    if (!StaffService.isStaffMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
 
     // Get all needed data
     const targetId = interaction.targetId;

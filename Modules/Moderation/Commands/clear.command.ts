@@ -13,10 +13,10 @@ import {
   TextChannel
 } from "discord.js";
 import { BaseSlashCommand } from "../../Base/Commands/base.command.js";
-import { SupportService } from "../Services/support.service.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
 import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
 import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
+import { StaffService } from "../Services/staff.service.js";
 
 class ClearCommand extends BaseSlashCommand {
   constructor() {
@@ -25,7 +25,7 @@ class ClearCommand extends BaseSlashCommand {
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
     if (!interaction.guild) return;
-    if (!SupportService.isSupportMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
+    if (!StaffService.isStaffMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
 
     /* Get selected options */
     const amount = interaction.options.getNumber("amount", true);

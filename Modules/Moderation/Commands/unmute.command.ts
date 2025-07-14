@@ -1,11 +1,11 @@
 import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, GuildMember, SlashCommandBuilder, Snowflake } from "discord.js";
 import { BaseSlashCommand } from "../../Base/Commands/base.command.js";
-import { SupportService } from "../Services/support.service.js";
 import { RestrictionService } from "../Services/restriction.service.js";
 import { MemberService } from "../../../Api/Guild/Member/member.service.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
 import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
 import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
+import { StaffService } from "../Services/staff.service.js";
 
 class UnmuteCommand extends BaseSlashCommand {
   constructor() {
@@ -14,7 +14,7 @@ class UnmuteCommand extends BaseSlashCommand {
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
     if (!interaction.guild) return;
-    if (!SupportService.isSupportMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
+    if (!StaffService.isStaffMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
 
     /* Get selected options */
     const user = interaction.options.getUser("user", true);

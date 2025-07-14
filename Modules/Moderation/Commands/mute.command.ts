@@ -1,6 +1,5 @@
 import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, GuildMember, PermissionFlagsBits, SlashCommandBuilder, Snowflake } from "discord.js";
 import { BaseSlashCommand } from "../../Base/Commands/base.command.js";
-import { SupportService } from "../Services/support.service.js";
 import { MemberService } from "../../../Api/Guild/Member/member.service.js";
 import { muteDurations, RestrictionDurations } from "../Config/restriction.config.js";
 import { RestrictionService } from "../Services/restriction.service.js";
@@ -16,7 +15,7 @@ class MuteCommand extends BaseSlashCommand {
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
     if (!interaction.guild) return;
-    if (!SupportService.isSupportMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
+    if (!StaffService.isStaffMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
 
     /* Get selected options */
     const user = interaction.options.getUser("user", true);
