@@ -1,11 +1,8 @@
-import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, GuildMember, SlashCommandBuilder, Snowflake } from "discord.js";
+import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, SlashCommandBuilder } from "discord.js";
 import { BaseSlashCommand } from "../../Base/Commands/base.command.js";
 import { RestrictionService } from "../Services/restriction.service.js";
 import { MemberService } from "../../../Api/Guild/Member/member.service.js";
-import { Embed } from "../../../Api/Components/Embed/embed.component.js";
-import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
-import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
-import { StaffService } from "../Services/staff.service.js";
+import { UserStatsService } from "../../Info/Services/user-stats.service.js";
 
 class UnmuteCommand extends BaseSlashCommand {
   constructor() {
@@ -14,7 +11,8 @@ class UnmuteCommand extends BaseSlashCommand {
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
     if (!interaction.guild) return;
-    if (!StaffService.isStaffMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
+    const isCommanderStaff = await UserStatsService.isStaffMember({ guild: interaction.guild, id: interaction.user.id });
+    if (!isCommanderStaff) throw new Error("You're not a staff member");
 
     /* Get selected options */
     const user = interaction.options.getUser("user", true);
@@ -24,16 +22,7 @@ class UnmuteCommand extends BaseSlashCommand {
     const member = await memberApi.resolveMemberById(user.id);
 
     /* Apply mute to member */
-    const embed = this.constructEmbed(member.id, interaction.user.id);
-    await RestrictionService.unmuteMember(member);
-    InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-    LoggerUtilities.log({ embed, title: "Member Unmuted", user: interaction.user });
-  }
-
-  private constructEmbed(memberId: Snowflake, modId: Snowflake) {
-    return Embed.BaseEmbed({
-      description: `<@${memberId}> has been unmuted by <@${modId}>`
-    });
+    await RestrictionService.unmuteMember({ interaction, member });
   }
 
   protected createSlashCommand(): SlashCommandBuilder {

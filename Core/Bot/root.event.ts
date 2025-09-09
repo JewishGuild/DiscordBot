@@ -3,10 +3,14 @@ import { ConsoleUtilities } from "../../Utilities/console.utilities.js";
 import { BaseEvent } from "../../Modules/Base/Events/base.event.js";
 import { readyEvent } from "../../Modules/Base/Events/ready.event.js";
 import { interactiveEvent } from "../../Modules/Interactive/Events/interactive.event.js";
-import { channelPresetEvent } from "../../Modules/Moderation/Events/channel-preset.event.js";
 import { interactionEvent } from "../../Modules/Base/Events/interaction.event.js";
 import { muteEvent } from "../../Modules/Moderation/Events/mute.event.js";
-import { spamDetectionEvent } from "../../Modules/Moderation/Events/spam-detection.event.js";
+import { memberJoinEvent } from "../../Modules/Info/Events/member-join.event.js";
+import { memberLeaveEvent } from "../../Modules/Info/Events/member-leave.event.js";
+import { memberEvent } from "../../Modules/Info/Events/member-update.event.js";
+import { messageSentEvent } from "../../Modules/Info/Events/message-sent.event.js";
+import { voiceUpdateEvent } from "../../Modules/Info/Events/voice-update.event.js";
+import { restrictedWordsEvent } from "../../Modules/Moderation/Events/restricted-words.event.js";
 
 /**
  * Centralized event manager that registers all event handlers dynamically.
@@ -25,7 +29,18 @@ export class RootEvent {
   public static init(client: Client<true>): void {
     this.logger.log("Initializing event handlers...");
 
-    const eventInstances: BaseEvent<keyof ClientEvents>[] = [readyEvent, interactiveEvent, channelPresetEvent, interactionEvent, muteEvent, spamDetectionEvent];
+    const eventInstances: BaseEvent<keyof ClientEvents>[] = [
+      readyEvent,
+      interactiveEvent,
+      interactionEvent,
+      muteEvent,
+      memberJoinEvent,
+      memberLeaveEvent,
+      memberEvent,
+      messageSentEvent,
+      voiceUpdateEvent,
+      restrictedWordsEvent
+    ];
 
     this.registerEvents(eventInstances);
     this.attachEvents(client);

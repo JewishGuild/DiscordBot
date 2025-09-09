@@ -4,7 +4,6 @@ import {
   Client,
   Collection,
   Colors,
-  GuildMember,
   Message,
   PartialMessage,
   PermissionFlagsBits,
@@ -16,16 +15,17 @@ import { BaseSlashCommand } from "../../Base/Commands/base.command.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
 import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
 import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
-import { StaffService } from "../Services/staff.service.js";
+import { UserStatsService } from "../../Info/Services/user-stats.service.js";
 
 class ClearCommand extends BaseSlashCommand {
   constructor() {
-    super("moderation");
+    super("moderation", false);
   }
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
     if (!interaction.guild) return;
-    if (!StaffService.isStaffMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
+    const isCommanderStaff = await UserStatsService.isStaffMember({ guild: interaction.guild, id: interaction.user.id });
+    if (!isCommanderStaff) throw new Error("You're not a staff member");
 
     /* Get selected options */
     const amount = interaction.options.getNumber("amount", true);
@@ -35,6 +35,7 @@ class ClearCommand extends BaseSlashCommand {
     const response = await channel.bulkDelete(amount);
 
     /* Handle reply */
+    await interaction.deferReply();
     InteractionUtilities.fadeReply(interaction, { embeds: [this.constructEmbed(amount)] });
     LoggerUtilities.log({ title: "Messages Cleared", embed: this.constructLogEmbed(amount, channel.id, response), user: interaction.user });
   }

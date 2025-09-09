@@ -17,9 +17,9 @@ class MutedJob extends BaseJob {
     for (const mutedMember of mutedMembers) {
       try {
         const member = await membersService.getMemberById(mutedMember.id);
-        await RestrictionService.unmuteMember(member);
+        await RestrictionService.unmuteMember({ member });
       } catch {
-        await RestrictionService.unmuteMember(mutedMember.id);
+        await RestrictionService.unmuteMember({ member: mutedMember.id });
       }
     }
   }

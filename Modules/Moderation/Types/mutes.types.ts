@@ -8,6 +8,7 @@ export type MutedMember = {
   timestamp: number;
   duration: number;
   permanent: boolean;
+  roles: Array<Snowflake>;
 };
 
 export type MutedMemberEntity = MutedMember & BaseEntity;

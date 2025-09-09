@@ -1,12 +1,9 @@
-import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, GuildMember, PermissionFlagsBits, SlashCommandBuilder, Snowflake } from "discord.js";
+import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { BaseSlashCommand } from "../../Base/Commands/base.command.js";
 import { MemberService } from "../../../Api/Guild/Member/member.service.js";
-import { muteDurations, RestrictionDurations } from "../Config/restriction.config.js";
+import { muteDurations } from "../Config/restriction.config.js";
 import { RestrictionService } from "../Services/restriction.service.js";
-import { StaffService } from "../Services/staff.service.js";
-import { Embed } from "../../../Api/Components/Embed/embed.component.js";
-import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
-import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
+import { UserStatsService } from "../../Info/Services/user-stats.service.js";
 
 class MuteCommand extends BaseSlashCommand {
   constructor() {
@@ -15,7 +12,8 @@ class MuteCommand extends BaseSlashCommand {
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
     if (!interaction.guild) return;
-    if (!StaffService.isStaffMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
+    const isCommanderStaff = await UserStatsService.isStaffMember({ guild: interaction.guild, id: interaction.user.id });
+    if (!isCommanderStaff) throw new Error("You're not a staff member");
 
     /* Get selected options */
     const user = interaction.options.getUser("user", true);
@@ -25,21 +23,12 @@ class MuteCommand extends BaseSlashCommand {
     /* Verify options validity */
     const memberApi = new MemberService(interaction.guild);
     const member = await memberApi.getMemberById(user.id);
-    if (StaffService.isStaffMember(member)) throw new Error("Can't mute a staff member.");
+
+    const isTargetStaff = await UserStatsService.isStaffMember({ guild: interaction.guild!, id: user.id });
+    if (isTargetStaff) throw new Error("Can't warn a staff member");
 
     /* Apply mute to member */
-    const embed = this.constructEmbed(member.id, interaction.user.id, duration, reason);
-    await RestrictionService.muteMember(member, interaction.user.id, duration, reason);
-    InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-    LoggerUtilities.log({ title: "Member Muted", user: interaction.user, embed });
-  }
-
-  private constructEmbed(memberId: Snowflake, modId: Snowflake, duration: number, reason: string) {
-    return new Embed({
-      description: `<@${memberId}> has been muted by <@${modId}> ${
-        duration === RestrictionDurations.Permanent ? "Permanently" : `for \`${duration}m\``
-      } with reason: \`${reason}\``
-    });
+    await RestrictionService.muteMember({ member, moderatorId: interaction.user.id, duration, reason, interaction });
   }
 
   protected createSlashCommand(): SlashCommandBuilder {

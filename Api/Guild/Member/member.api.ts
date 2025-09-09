@@ -20,6 +20,16 @@ export class MemberApi extends GuildApi {
   }
 
   /**
+   * Fetches all guild members.
+   *
+   * @param options - (Optional) Fetch options. @see {@link BaseFetchOptions}
+   * @returns A promise resolving to the fetched member.
+   */
+  public async getAllMembers() {
+    return this.memberManager.fetch({ withPresences: false });
+  }
+
+  /**
    * Fetches a guild member by its ID.
    *
    * @param id - The member ID.
@@ -27,6 +37,6 @@ export class MemberApi extends GuildApi {
    * @returns A promise resolving to the fetched member.
    */
   public async getMemberById(id: Snowflake) {
-    return this.memberManager.fetch({ user: id, cache: true });
+    return this.memberManager.fetch({ user: id, cache: true, withPresences: false });
   }
 }

@@ -1,9 +1,9 @@
-import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, GuildMember, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { BaseSlashCommand } from "../../../Base/Commands/base.command.js";
 import { addSubCommand } from "./add.sub-command.js";
 import { removeSubCommand } from "./remove.sub-command.js";
 import { listSubCommand } from "./list.sub-command.js";
-import { StaffService } from "../../Services/staff.service.js";
+import { UserStatsService } from "../../../Info/Services/user-stats.service.js";
 
 class WarnCommand extends BaseSlashCommand {
   constructor() {
@@ -12,7 +12,8 @@ class WarnCommand extends BaseSlashCommand {
 
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
     if (!interaction.guild) return;
-    if (!StaffService.isStaffMember(interaction.member as GuildMember)) throw new Error("You're not a support staff member.");
+    const isCommanderStaff = await UserStatsService.isStaffMember({ guild: interaction.guild, id: interaction.user.id });
+    if (!isCommanderStaff) throw new Error("You're not a staff member");
 
     /* Handle subcommands */
     switch (interaction.options.getSubcommand()) {

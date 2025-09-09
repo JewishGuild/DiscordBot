@@ -21,14 +21,16 @@ export abstract class BaseCommand<T extends CommandBuilder> {
   public readonly name: string;
   public readonly category: CommandCategory;
   public readonly type: ApplicationCommandType;
+  public readonly defer: boolean;
   protected readonly logger: ConsoleUtilities;
 
   /** Initializes a new command with specified category. */
-  constructor(category: CommandCategory) {
+  constructor(category: CommandCategory, defer = true) {
     this.data = this.buildData();
     this.name = this.data.name;
     this.category = category;
     this.type = this.getCommandType();
+    this.defer = defer;
     this.logger = new ConsoleUtilities("Command", `${this.getTypeString()}:${this.name}`);
   }
 

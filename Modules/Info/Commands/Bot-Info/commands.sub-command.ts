@@ -1,10 +1,10 @@
 import { Client, ChatInputCommandInteraction, SlashCommandSubcommandBuilder, APIEmbedField, APIApplicationCommandOptionChoice } from "discord.js";
-import { BaseSubCommand } from "../../Base/Commands/base.sub-command.js";
-import { Embed } from "../../../Api/Components/Embed/embed.component.js";
-import { BaseCommand, BaseSlashCommand, CommandCategory } from "../../Base/Commands/base.command.js";
-import { RootCommand } from "../../../Core/Bot/root.command.js";
-import { GeneralUtilities } from "../../../Utilities/general.utilities.js";
-import { GroupedCommands } from "../Types/info.types.js";
+import { BaseSubCommand } from "../../../Base/Commands/base.sub-command.js";
+import { Embed } from "../../../../Api/Components/Embed/embed.component.js";
+import { BaseSlashCommand, CommandCategory } from "../../../Base/Commands/base.command.js";
+import { RootCommand } from "../../../../Core/Bot/root.command.js";
+import { GeneralUtilities } from "../../../../Utilities/general.utilities.js";
+import { GroupedCommands } from "../../Types/info.types.js";
 
 // Constants
 const CATEGORY_OPTIONS: Array<APIApplicationCommandOptionChoice<string>> = [

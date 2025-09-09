@@ -19,8 +19,9 @@ class InteractionEvent extends BaseEvent<"interactionCreate"> {
       this.logger.log(`Command ${commandIdentifier} has been triggered`);
 
       try {
-        await interaction.deferReply();
-        await RootCommand.getCommandsCache()[interaction.commandName].execute(client, interaction);
+        const command = RootCommand.getCommandsCache()[interaction.commandName];
+        if (command.defer) await interaction.deferReply();
+        await command.execute(client, interaction);
         this.logger.success(`Command ${commandIdentifier} has been completed`);
       } catch (error) {
         this.logger.error(`Command ${commandIdentifier} has crashed, info: ${error}`);

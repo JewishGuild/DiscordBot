@@ -139,8 +139,8 @@ export interface PermissionAnalysis {
   permissions: DiscordPermission[];
   permissionNames: string[];
   totalCount: number;
-  hasAdministrator: boolean;
-  isSuperUser: boolean;
+  isAdministrator: boolean;
+  isStaff: boolean;
   categories: Record<PermissionCategory, DiscordPermission[]>;
   customBits: bigint[];
 }
@@ -170,15 +170,15 @@ export class PermissionsUtilities {
     }
 
     const categories = this.categorizePermissions(permissions);
-    const hasAdministrator = permissions.includes(DiscordPermission.ADMINISTRATOR);
-    const isSuperUser = hasAdministrator || categories[PermissionCategory.ADMINISTRATIVE].length >= 2;
+    const isAdministrator = permissions.includes(DiscordPermission.ADMINISTRATOR);
+    const isStaff = isAdministrator || categories[PermissionCategory.ADMINISTRATIVE].length >= 2 || categories[PermissionCategory.MODERATION].length >= 2;
 
     return {
       permissions,
       permissionNames,
       totalCount: permissions.length + customBits.length,
-      hasAdministrator,
-      isSuperUser,
+      isAdministrator,
+      isStaff,
       categories,
       customBits
     };

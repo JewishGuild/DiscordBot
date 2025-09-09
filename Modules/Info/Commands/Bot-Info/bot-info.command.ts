@@ -1,9 +1,9 @@
-import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, SlashCommandBuilder, SlashCommandSubcommandBuilder } from "discord.js";
-import { BaseSlashCommand } from "../../Base/Commands/base.command.js";
+import { ApplicationIntegrationType, ChatInputCommandInteraction, Client, SlashCommandBuilder } from "discord.js";
+import { BaseSlashCommand } from "../../../Base/Commands/base.command.js";
 import { commandsSubCommand } from "./commands.sub-command.js";
 import { generalSubCommand } from "./general.sub-command.js";
 
-class InfoCommand extends BaseSlashCommand {
+class BotInfoCommand extends BaseSlashCommand {
   constructor() {
     super("info");
   }
@@ -32,4 +32,4 @@ class InfoCommand extends BaseSlashCommand {
   }
 }
 
-export const infoCommand = new InfoCommand();
+export const botInfoCommand = new BotInfoCommand();

@@ -10,7 +10,7 @@ class ListSubCommand extends BaseSubCommand {
     const user = interaction.options.getUser("user", true);
 
     /* Lists the warnings */
-    const warnings = await RestrictionService.getUserWarnings(user.id);
+    const warnings = await RestrictionService.getMemberWarnings(user.id);
     if (warnings.length === 0) throw new Error("User doesn't have any warnings");
     await interaction.editReply({ embeds: [this.constructEmbed(user.tag, warnings)] });
   }

@@ -1,7 +1,7 @@
 import { Client, ChatInputCommandInteraction, SlashCommandSubcommandBuilder } from "discord.js";
-import { BaseSubCommand } from "../../Base/Commands/base.sub-command.js";
-import { Embed } from "../../../Api/Components/Embed/embed.component.js";
-import { Bot } from "../../../Core/Bot/bot.js";
+import { BaseSubCommand } from "../../../Base/Commands/base.sub-command.js";
+import { Embed } from "../../../../Api/Components/Embed/embed.component.js";
+import { Bot } from "../../../../Core/Bot/bot.js";
 
 class GeneralSubCommand extends BaseSubCommand {
   public async execute(client: Client, interaction: ChatInputCommandInteraction) {

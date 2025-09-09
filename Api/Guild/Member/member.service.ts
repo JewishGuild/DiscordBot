@@ -6,6 +6,10 @@ export class MemberService extends MemberApi {
     super(guild);
   }
 
+  public async resolveAllMembers() {
+    return await this.getAllMembers();
+  }
+
   public async resolveMemberById(id: Snowflake) {
     const member = await this.getMemberById(id);
     if (!member) throw new Error("Invalid, user is not a member in this guild.");
