@@ -22,6 +22,7 @@ class RestrictedWordsEvent extends BaseEvent<"messageCreate"> {
           moderatorId: client.user.id,
           reason: `Restricted content detected: "${message.content}"`
         });
+        await message.delete();
       }
     }
   }
