@@ -3,7 +3,7 @@ import { Announcement } from "../Types/announcements.types.js";
 import { Bot } from "../../../Core/Bot/bot.js";
 import { ChannelService } from "../../../Api/Guild/Channel/channel.service.js";
 import { Colors, Guild, TextChannel, User } from "discord.js";
-import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
+import { WebhookUtilities } from "../../../Utilities/webhook.utilities.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
 import { MessageService } from "../../../Api/Guild/Channel/TextChannel/Message/message.service.js";
 import { AnnouncementService } from "../Services/announcements.service.js";
@@ -36,7 +36,7 @@ export class AnnouncementJob extends BaseJob {
         await messageService.deleteMessage(oldMessageId);
       }
     } catch {
-      LoggerUtilities.log({ embed: this.createErrorEmbed(), user: Bot.getInstance().getClient().user as User, title: "Announcement Failure" });
+      WebhookUtilities.log({ embed: this.createErrorEmbed(), user: Bot.getInstance().getClient().user as User, title: "Announcement Failure" });
     }
   }
 

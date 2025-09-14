@@ -12,6 +12,7 @@ import { botInfoCommand } from "../../Modules/Info/Commands/Bot-Info/bot-info.co
 import { permanentMuteCommand } from "../../Modules/Moderation/Commands/permanent-mute.command.js";
 import { purgeMessages } from "../../Modules/Moderation/Commands/purge-messages.command.js";
 import { memberInfoCommand } from "../../Modules/Info/Commands/member-info.command.js";
+import { reportMessageCommand } from "../../Modules/Moderation/Commands/report-message.js";
 
 /**
  * Centralized commands manager that registers all commands dynamically.
@@ -28,7 +29,8 @@ export class RootCommand {
     botInfoCommand,
     permanentMuteCommand,
     purgeMessages,
-    memberInfoCommand
+    memberInfoCommand,
+    reportMessageCommand
   ];
 
   public static async init(client: Client<true>): Promise<void> {

@@ -1,9 +1,9 @@
-import { ChatInputCommandInteraction, GuildMember, Snowflake, UserContextMenuCommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction, GuildMember, Snowflake, User, UserContextMenuCommandInteraction } from "discord.js";
 import { MutedMemberCollection } from "../Models/mutes.collection.js";
-import { muteDmFormatter, RestrictionDurations, RestrictionRoles, warnDmFormatter } from "../Config/restriction.config.js";
+import { RestrictionDurations, RestrictionRoles } from "../Config/restriction.config.js";
 import { MutedMember, MutedMemberEntity } from "../Types/mutes.types.js";
 import { DirectMessageUtilities } from "../../../Utilities/direct-message.utilities.js";
-import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
+import { WebhookUtilities } from "../../../Utilities/webhook.utilities.js";
 import { RestrictionUtilities } from "../Utilities/restriction.utilities.js";
 import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
 import { Warning } from "../Types/warns.types.js";
@@ -41,12 +41,12 @@ interface UnwarnMemberParams {
   interaction: ChatInputCommandInteraction;
   moderatorId: Snowflake;
   warnId: string;
+  user: User;
 }
 
 export class RestrictionService {
   /** Mute a member by removing their roles and applying the mute role*/
   public static async muteMember({ interaction, member, moderatorId, duration, reason }: MuteMemberParams) {
-    await this.ensureMemberNotMuted(member.id);
     const roles = await this.applyMute(member);
 
     const mutedMember: MutedMember = {
@@ -59,17 +59,19 @@ export class RestrictionService {
       roles
     };
 
-    await MutedMemberCollection.getInstance().insertMutedMember(mutedMember);
+    const doc = await MutedMemberCollection.getInstance().upsertMutedMember(mutedMember.id, mutedMember);
     await UserStatsCollection.getInstance().updateIncrementalStats({ guild: member.guild, id: member.id }, { muteCount: 1, muteDurationCount: duration });
-    await UserStatsCollection.getInstance().updateGenericStats({ guild: member.guild, id: member.id }, { isMuted: true });
-    await DirectMessageUtilities.sendDM(member.user, muteDmFormatter(duration, reason));
+    const updated = doc.duration != duration;
+    !updated && (await UserStatsCollection.getInstance().updateGenericStats({ guild: member.guild, id: member.id }, { isMuted: true }));
 
     // log
-    const embed = RestrictionUtilities.createMuteEmbed({ id: member.id, moderatorId, duration, reason, roles });
-    await LoggerUtilities.log({ title: "Member Muted", user: interaction?.user || Bot.getInstance().getClient().user!, embed });
-    if (interaction) {
-      await InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-    }
+    const title = updated ? `Member Mute Duration Increased` : `Member Muted`;
+    const informed = await DirectMessageUtilities.sendDM(member.user, RestrictionUtilities.formatMuteDM(doc.permanent, doc.duration, reason));
+    const embed = RestrictionUtilities.createMuteEmbed({ id: member.id, moderatorId, duration: doc.duration, reason, roles });
+    const comments = informed ? `Member was informed via DM.` : `Member was not informed via DM likely due to their DM settings.`;
+    await WebhookUtilities.log({ title, user: interaction?.user || Bot.getInstance().getClient().user!, embed, comments });
+
+    if (interaction) await InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
   }
 
   /** Unmute a member by reassigning their roles and revoking mute role*/
@@ -88,11 +90,13 @@ export class RestrictionService {
       await UserStatsCollection.getInstance().updateGenericStats({ guild: member.guild, id: member.id }, { isMuted: false });
 
       // log
-      const embed = RestrictionUtilities.createUnmuteEmbed({ id, roles: reassignedRoles });
-      await LoggerUtilities.log({ title: "Member Unmuted", user: interaction?.user || Bot.getInstance().getClient().user!, embed });
-      if (interaction) {
-        await InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-      }
+      const expired = !!!interaction;
+      const informed = await DirectMessageUtilities.sendDM(member.user, RestrictionUtilities.formatUnmuteDM(expired));
+      const embed = RestrictionUtilities.createUnmuteEmbed({ id, roles: reassignedRoles, expired });
+      const comments = informed ? `Member was informed via DM.` : `Member was not informed via DM likely due to their DM settings.`;
+      await WebhookUtilities.log({ title: "Member Unmuted", user: interaction?.user || Bot.getInstance().getClient().user!, embed, comments });
+
+      if (interaction) await InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
     }
     await MutedMemberCollection.getInstance().deleteMutedMember(id);
   }
@@ -161,13 +165,14 @@ export class RestrictionService {
       timestamp: Date.now()
     };
 
-    await WarnsCollection.getInstance().insertWarning(warning);
+    const doc = await WarnsCollection.getInstance().insertWarning(warning);
     await UserStatsCollection.getInstance().updateIncrementalStats({ guild: member.guild, id: member.id }, { warnCount: 1 });
 
     // log
-    await DirectMessageUtilities.sendDM(member.user, warnDmFormatter(reason));
-    const embed = RestrictionUtilities.createWarnEmbed({ id: member.id, moderatorId, reason });
-    await LoggerUtilities.log({ title: "Member Warned", user: member.user, embed });
+    const informed = await DirectMessageUtilities.sendDM(member.user, RestrictionUtilities.formatWarnDM(reason, doc._id.toString()));
+    const embed = RestrictionUtilities.createWarnEmbed({ id: member.id, moderatorId, reason, warnId: doc._id.toString() });
+    const comments = informed ? `Member was informed via DM.` : `Member was not informed via DM likely due to their DM settings.`;
+    await WebhookUtilities.log({ title: "Member Warned", user: member.user, embed, comments });
 
     if (interaction) await InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
 
@@ -179,17 +184,19 @@ export class RestrictionService {
     }
   }
 
-  public static async unwarnMember({ interaction, moderatorId, warnId }: UnwarnMemberParams) {
-    const warnDocument = await WarnsCollection.getInstance().getOneByQuery({ _id: new ObjectId(warnId) });
+  public static async unwarnMember({ interaction, user, moderatorId, warnId }: UnwarnMemberParams) {
+    const warnDocument = await WarnsCollection.getInstance().getOneByQuery({ _id: new ObjectId(warnId), id: user.id });
     const success = await WarnsCollection.getInstance().delete(warnId);
 
-    if (warnDocument && success) {
-      await UserStatsCollection.getInstance().updateIncrementalStats({ guild: interaction.guild!, id: warnDocument.id }, { warnCount: -1 });
-    }
+    if (!warnDocument || !success) throw new Error(`User's <@${user.id}> warning \`${warnId}\` was not found`);
+
+    await UserStatsCollection.getInstance().updateIncrementalStats({ guild: interaction.guild!, id: warnDocument.id }, { warnCount: -1 });
 
     // log
-    const embed = RestrictionUtilities.createUnwarnEmbed({ moderatorId, success, warnId });
-    await LoggerUtilities.log({ title: "Member unwarned", user: interaction.user, embed });
+    const informed = await DirectMessageUtilities.sendDM(user, RestrictionUtilities.formatUnwarnDM(warnDocument._id.toString()));
+    const comments = informed ? `Member was informed via DM.` : `Member was not informed via DM likely due to their DM settings.`;
+    const embed = RestrictionUtilities.createUnwarnEmbed({ moderatorId, warnId, userId: user.id });
+    await WebhookUtilities.log({ title: "Member unwarned", user: interaction.user, embed, comments });
     await InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
   }
 

@@ -4,7 +4,7 @@ import { roleOptions } from "../../Config/role.config.js";
 import { MemberService } from "../../../../Api/Guild/Member/member.service.js";
 import { Embed } from "../../../../Api/Components/Embed/embed.component.js";
 import { InteractionUtilities } from "../../../../Utilities/interaction.utilities.js";
-import { LoggerUtilities } from "../../../../Utilities/logger.utilities.js";
+import { WebhookUtilities } from "../../../../Utilities/webhook.utilities.js";
 
 class AddSubCommand extends BaseSubCommand {
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
@@ -23,7 +23,7 @@ class AddSubCommand extends BaseSubCommand {
     await member.roles.add(role);
     const embed = this.constructEmbed(user.id, role);
     InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-    LoggerUtilities.log({ title: "Special Role Added", user: interaction.user, embed });
+    WebhookUtilities.log({ title: "Special Role Added", user: interaction.user, embed });
   }
 
   private constructEmbed(memberId: Snowflake, roleId: Snowflake) {

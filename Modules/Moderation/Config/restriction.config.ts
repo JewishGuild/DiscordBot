@@ -35,14 +35,3 @@ export const muteDurations = [
   { name: "1 Week", value: RestrictionDurations.OneWeek },
   { name: "Permanent", value: RestrictionDurations.Permanent }
 ];
-
-export function muteDmFormatter(duration: number, reason: string) {
-  const estimatedDuration = Math.floor(Date.now() / 1000) + duration * 60;
-  return `⛔ You have been muted in JewishGuild server. You will be muted ${
-    duration <= RestrictionDurations.Permanent ? "permanently" : `until <t:${estimatedDuration}:F>`
-  } with reason: \`${reason}\``;
-}
-
-export function warnDmFormatter(reason: string) {
-  return `⚠️ You have been warned in JewishGuild server. Reason is: \`${reason}\``;
-}

@@ -1,5 +1,6 @@
 import {
   ActionRowBuilder,
+  APIEmbed,
   ButtonBuilder,
   ButtonInteraction,
   ButtonStyle,
@@ -19,7 +20,7 @@ export class Embed extends EmbedBuilder {
   private readonly config: EmbedConfig;
   private paginationState?: PaginationState;
 
-  constructor(data: EmbedData, overrides: EmbedConfigOverrides = {}) {
+  constructor(data: EmbedData | APIEmbed, overrides: EmbedConfigOverrides = {}) {
     super(data);
     this.config = this.getConfig(overrides);
     this.implementConfig();
@@ -39,6 +40,10 @@ export class Embed extends EmbedBuilder {
         }
       }
     });
+  }
+
+  public getOverrides(): EmbedConfigOverrides {
+    return this.config;
   }
 
   private getConfig(overrides: EmbedConfigOverrides = {}): EmbedConfig {

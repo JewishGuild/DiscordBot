@@ -14,7 +14,7 @@ import {
 import { BaseSlashCommand } from "../../Base/Commands/base.command.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
 import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
-import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
+import { WebhookUtilities } from "../../../Utilities/webhook.utilities.js";
 import { UserStatsService } from "../../Info/Services/user-stats.service.js";
 
 class ClearCommand extends BaseSlashCommand {
@@ -37,7 +37,7 @@ class ClearCommand extends BaseSlashCommand {
     /* Handle reply */
     await interaction.deferReply();
     InteractionUtilities.fadeReply(interaction, { embeds: [this.constructEmbed(amount)] });
-    LoggerUtilities.log({ title: "Messages Cleared", embed: this.constructLogEmbed(amount, channel.id, response), user: interaction.user });
+    WebhookUtilities.log({ title: "Messages Cleared", embed: this.constructLogEmbed(amount, channel.id, response), user: interaction.user });
   }
 
   private constructEmbed(amount: number) {

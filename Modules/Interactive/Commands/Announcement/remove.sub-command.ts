@@ -2,7 +2,7 @@ import { Client, ChatInputCommandInteraction, SlashCommandSubcommandBuilder, Sno
 import { BaseSubCommand } from "../../../Base/Commands/base.sub-command.js";
 import { Embed } from "../../../../Api/Components/Embed/embed.component.js";
 import { InteractionUtilities } from "../../../../Utilities/interaction.utilities.js";
-import { LoggerUtilities } from "../../../../Utilities/logger.utilities.js";
+import { WebhookUtilities } from "../../../../Utilities/webhook.utilities.js";
 import { AnnouncementService } from "../../Services/announcements.service.js";
 
 class RemoveSubCommand extends BaseSubCommand {
@@ -14,7 +14,7 @@ class RemoveSubCommand extends BaseSubCommand {
     const success = await AnnouncementService.removeAnnouncement(name);
     const embed = this.constructEmbed(interaction.user.id, name, success);
     InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-    LoggerUtilities.log({ title: "Announcement Removed", embed, user: interaction.user });
+    WebhookUtilities.log({ title: "Announcement Removed", embed, user: interaction.user });
   }
 
   private constructEmbed(id: Snowflake, name: string, success: boolean) {

@@ -1,6 +1,7 @@
 import { Snowflake } from "discord.js";
 import { BaseCollection } from "../../Base/Models/base.collection.js";
 import { MutedMember, MutedMemberEntity } from "../Types/mutes.types.js";
+import { RestrictionDurations } from "../Config/restriction.config.js";
 
 export class MutedMemberCollection extends BaseCollection<MutedMemberEntity> {
   private static instance: MutedMemberCollection;
@@ -31,13 +32,17 @@ export class MutedMemberCollection extends BaseCollection<MutedMemberEntity> {
 
   public async upsertMutedMember(id: Snowflake, ...args: Partial<MutedMember>[]) {
     const existing = await this.getOneByQuery({ id });
+    let final: MutedMemberEntity | null;
 
     if (existing) {
-      const duration = existing.duration + args.reduce((sum, arg) => sum + (arg.duration || 0), 0);
-      await this.editMutedMember(id, ...args, { duration });
+      if (existing.permanent) throw new Error(`Member <@${id}> is already permanently muted.`);
+
+      const duration = existing.duration + args.reduce((sum, arg) => sum + (arg.duration == RestrictionDurations.Permanent ? 0 : arg.duration || 0), 0);
+      final = await this.editMutedMember(id, ...args, { duration, roles: existing.roles, timestamp: existing.timestamp });
     } else {
-      await this.insert(Object.assign({}, ...args));
+      final = await this.insert(Object.assign({}, ...args));
     }
+    return final as MutedMemberEntity;
   }
 
   public async deleteMutedMember(id: Snowflake) {

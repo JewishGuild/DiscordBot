@@ -2,7 +2,7 @@ import { Client, ChatInputCommandInteraction, SlashCommandSubcommandBuilder, Col
 import { BaseSubCommand } from "../../../Base/Commands/base.sub-command.js";
 import { Embed } from "../../../../Api/Components/Embed/embed.component.js";
 import { InteractionUtilities } from "../../../../Utilities/interaction.utilities.js";
-import { LoggerUtilities } from "../../../../Utilities/logger.utilities.js";
+import { WebhookUtilities } from "../../../../Utilities/webhook.utilities.js";
 import { AnnouncementCycle, announcementCycles, resolveAnnouncementCycleName } from "../../Config/announcements.config.js";
 import { Announcement } from "../../Types/announcements.types.js";
 import { AnnouncementService } from "../../Services/announcements.service.js";
@@ -25,7 +25,7 @@ class EditSubCommand extends BaseSubCommand {
     const embed = this.constructEmbed({ name, ...edits });
     await AnnouncementService.editAnnouncement(name, edits);
     InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-    LoggerUtilities.log({ embed, title: `Announcement Edited`, user: interaction.user });
+    WebhookUtilities.log({ embed, title: `Announcement Edited`, user: interaction.user });
   }
 
   private constructEmbed({ name, message, cycle, channel }: Partial<Announcement>) {

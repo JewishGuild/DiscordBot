@@ -14,7 +14,7 @@ import { ChannelService } from "../../../Api/Guild/Channel/channel.service.js";
 import { GeneralUtilities } from "../../../Utilities/general.utilities.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
 import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
-import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
+import { WebhookUtilities } from "../../../Utilities/webhook.utilities.js";
 import { WorkerQueue } from "../../../Utilities/worker-queue.utilities.js";
 import { UserStatsService } from "../../Info/Services/user-stats.service.js";
 
@@ -51,7 +51,7 @@ class PurgeMessages extends BaseUserContextCommand {
     // Submit results
     const embed = this.constructEmbed(targetId, interaction.user.id, result);
     InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-    LoggerUtilities.log({ title: "Purged Messages", embed, user: interaction.user });
+    WebhookUtilities.log({ title: "Purged Messages", embed, user: interaction.user });
   }
 
   private async deleteMessagesFromChannel(channel: TextChannel | ThreadChannel, userId: Snowflake, result: PurgeResult) {

@@ -11,6 +11,7 @@ import { memberEvent } from "../../Modules/Info/Events/member-update.event.js";
 import { messageSentEvent } from "../../Modules/Info/Events/message-sent.event.js";
 import { voiceUpdateEvent } from "../../Modules/Info/Events/voice-update.event.js";
 import { restrictedWordsEvent } from "../../Modules/Moderation/Events/restricted-words.event.js";
+import { reportEvent } from "../../Modules/Moderation/Events/report.event.js";
 
 /**
  * Centralized event manager that registers all event handlers dynamically.
@@ -39,7 +40,8 @@ export class RootEvent {
       memberEvent,
       messageSentEvent,
       voiceUpdateEvent,
-      restrictedWordsEvent
+      restrictedWordsEvent,
+      reportEvent
     ];
 
     this.registerEvents(eventInstances);

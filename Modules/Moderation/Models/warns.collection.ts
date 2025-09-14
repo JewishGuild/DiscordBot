@@ -18,7 +18,7 @@ export class WarnsCollection extends BaseCollection<WarningEntity> {
   }
 
   public async insertWarning(entry: Warning) {
-    return this.insert(entry);
+    return this.insert(entry) as Promise<WarningEntity>;
   }
 
   public async editWarning(id: Snowflake, ...args: Partial<Warning>[]) {

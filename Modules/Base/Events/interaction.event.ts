@@ -2,7 +2,7 @@ import { Client, ClientEvents, Colors } from "discord.js";
 import { BaseEvent } from "./base.event.js";
 import { RootCommand } from "../../../Core/Bot/root.command.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
-import { LoggerUtilities } from "../../../Utilities/logger.utilities.js";
+import { WebhookUtilities } from "../../../Utilities/webhook.utilities.js";
 import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
 
 class InteractionEvent extends BaseEvent<"interactionCreate"> {
@@ -28,7 +28,7 @@ class InteractionEvent extends BaseEvent<"interactionCreate"> {
         //@ts-ignore
         const embed = this.createErrorEmbed(error.message);
         InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
-        LoggerUtilities.log({ title: "Error", embed, user: interaction.user });
+        WebhookUtilities.log({ title: "Error", embed, user: interaction.user });
       }
     }
   }

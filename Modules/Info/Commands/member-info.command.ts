@@ -5,7 +5,7 @@ import { UserStatsEntity } from "../Types/user-stats.types.js";
 import { Embed } from "../../../Api/Components/Embed/embed.component.js";
 import { MutedMemberCollection } from "../../Moderation/Models/mutes.collection.js";
 import { MutedMemberEntity } from "../../Moderation/Types/mutes.types.js";
-import { RestrictionDurations } from "../../Moderation/Config/restriction.config.js";
+import { TimeUtilities } from "../../../Utilities/time.utilities.js";
 
 class MemberInfoCommand extends BaseSlashCommand {
   constructor() {
@@ -32,7 +32,7 @@ class MemberInfoCommand extends BaseSlashCommand {
     const estimatedDuration = Math.floor(Date.now() / 1000) + (currentMute?.duration ?? 0) * 60;
     const muteDescription = currentMute
       ? `is muted by <@${currentMute.moderatorId}> ${
-          currentMute.duration === RestrictionDurations.Permanent ? "permanently" : `until <t:${estimatedDuration}:F>`
+          currentMute.permanent ? "permanently" : `until ${TimeUtilities.formatLocalizedTime(estimatedDuration)}`
         } for: \`${currentMute.reason}\``
       : `has no ongoing limitations.`;
     const latestJoin = stats.joins![stats.joins!.length - 1];
@@ -50,20 +50,24 @@ class MemberInfoCommand extends BaseSlashCommand {
     return new Embed(
       {
         title: `Member Information`,
-        description: `${lights}ㅤMember <@${stats.id}> ${muteDescription}\n\n-# System is tracking data since <t:${Math.floor(
-          1757455944364 / 1000
-        )}:F>, earlier data might not appear.`,
+        description: `${lights}ㅤMember <@${stats.id}> ${muteDescription}\n\n-# System is tracking data since ${TimeUtilities.formatLocalizedTime(
+          Math.floor(1757455944364 / 1000)
+        )}, earlier data might not appear.`,
         fields: [
           { name: "ㅤ", value: "ㅤ", inline: false },
           { name: `General Metrics ${detective}`, value: "ㅤ", inline: false },
           { name: "Known aliases", value: `\`${stats.nicknames!.join(",\t")}\``, inline: true },
           { name: `Server boost ${nitro}`, value: `Ever boosted: \`${stats.boosted}\`\nActive boosting: \`${stats.isBooster}\``, inline: true },
-          { name: "Latest join", value: latestJoin ? `<t:${Math.floor(latestJoin / 1000)}:F>` : "`No entry`", inline: true },
-          { name: "Latest leave", value: latestLeave ? `<t:${Math.floor(latestLeave / 1000)}:F>` : "`No entry`", inline: true },
-          { name: "Latest chat activity", value: stats.lastChatActivity ? `<t:${Math.floor(stats.lastChatActivity / 1000)}:F>` : "`No entry`", inline: true },
+          { name: "Latest join", value: latestJoin ? TimeUtilities.formatLocalizedTime(Math.floor(latestJoin / 1000)) : "`No entry`", inline: true },
+          { name: "Latest leave", value: latestLeave ? TimeUtilities.formatLocalizedTime(Math.floor(latestLeave / 1000)) : "`No entry`", inline: true },
+          {
+            name: "Latest chat activity",
+            value: stats.lastChatActivity ? TimeUtilities.formatLocalizedTime(Math.floor(stats.lastChatActivity / 1000)) : "`No entry`",
+            inline: true
+          },
           {
             name: "Latest voice activity",
-            value: stats.lastVoiceActivity ? `<t:${Math.floor(stats.lastVoiceActivity / 1000)}:F>` : "`No entry`",
+            value: stats.lastVoiceActivity ? TimeUtilities.formatLocalizedTime(Math.floor(stats.lastVoiceActivity / 1000)) : "`No entry`",
             inline: true
           },
           { name: "ㅤ", value: "ㅤ", inline: false },
@@ -74,7 +78,7 @@ class MemberInfoCommand extends BaseSlashCommand {
           { name: "ㅤ", value: "ㅤ", inline: false },
           { name: `Infraction Metrics ${prison}`, value: "ㅤ", inline: false },
           { name: "Overall mutes count", value: `\`${stats.muteCount}\``, inline: true },
-          { name: "Overall mutes duration", value: `\`${stats.muteDurationCount}m\``, inline: true },
+          { name: "Overall mutes duration", value: `\`${TimeUtilities.formatMinutes(stats.muteDurationCount ?? 0)}\``, inline: true },
           { name: "Overall warns count", value: `\`${stats.warnCount}\``, inline: true }
         ]
       },
