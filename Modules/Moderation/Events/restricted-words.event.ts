@@ -18,7 +18,7 @@ class RestrictedWordsEvent extends BaseEvent<"messageCreate"> {
     if (matched) {
       const isTargetStaff = await UserStatsService.isStaffMember({ guild: message.guild, id: message.member.id });
 
-      if (isTargetStaff) {
+      if (!isTargetStaff) {
         await message.delete();
         await RestrictionService.warnMember({
           member: message.member,
@@ -26,7 +26,7 @@ class RestrictedWordsEvent extends BaseEvent<"messageCreate"> {
           reason: `Restricted content detected: "${message.content}"`
         });
 
-        if (!triedEvading) {
+        if (triedEvading) {
           await RestrictionService.muteMember({
             member: message.member,
             duration: RestrictionDurations.SixHours,
