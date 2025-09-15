@@ -2,9 +2,9 @@ import { MessageCreateOptions, MessagePayload, User } from "discord.js";
 
 export class DirectMessageUtilities {
   public static async sendDM(target: User, options: string | MessagePayload | MessageCreateOptions) {
-    const dmChannel = target.dmChannel || (await target.createDM(true));
     let informed = false;
     try {
+      const dmChannel = target.dmChannel || (await target.createDM(true));
       await dmChannel.send(options);
       informed = true;
     } catch {
