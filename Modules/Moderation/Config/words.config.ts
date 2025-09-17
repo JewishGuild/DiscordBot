@@ -1,4 +1,13 @@
-export const restrictedWords = ["heil", "hitler", "goy", "palestine", "palestinian", "intifada", "intefada", "nigger", "nigga", "kike", "genocide"] as const;
+export const restrictedWords = [
+  "heil",
+  "hitler",
+  /* "goy", "palestine", "palestinian",*/ "intifada",
+  "intefada",
+  "nigger",
+  "nigga",
+  "kike",
+  "genocide"
+] as const;
 const GAP_MAX = 2;
 const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
