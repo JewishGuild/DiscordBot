@@ -52,7 +52,7 @@ export class ReportUtilities {
     const buttons: Array<ButtonBuilder> = [];
 
     buttons.push(
-      new ButtonBuilder().setCustomId(`${systemPrefix}-${reportedMessageId}-neutral`).setLabel("Ignore").setStyle(ButtonStyle.Success).setEmoji("👍🏼"),
+      new ButtonBuilder().setCustomId(`${systemPrefix}-${reportedMessageId}-neutral`).setLabel("Ignore").setStyle(ButtonStyle.Secondary).setEmoji("👍🏼"),
       new ButtonBuilder().setCustomId(`${systemPrefix}-${reportedMessageId}-false`).setLabel("False").setStyle(ButtonStyle.Primary).setEmoji("❌"),
       new ButtonBuilder().setCustomId(`${systemPrefix}-${reportedMessageId}-delete`).setLabel("Delete").setStyle(ButtonStyle.Primary).setEmoji("💬"),
       new ButtonBuilder().setCustomId(`${systemPrefix}-${reportedMessageId}-warn`).setLabel("Warn").setStyle(ButtonStyle.Danger).setEmoji("👮🏼")
