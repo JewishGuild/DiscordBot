@@ -100,4 +100,9 @@ export abstract class BaseCollection<T extends BaseEntity> {
     const { modifiedCount } = await this.collection.updateMany(filters, { $set: safeReplacers as MatchKeysAndValues<T> });
     return modifiedCount;
   }
+
+  /** Counts documents that align with the query */
+  public async countByQuery(query: Filter<T> = {}): Promise<number> {
+    return this.collection.countDocuments(query);
+  }
 }

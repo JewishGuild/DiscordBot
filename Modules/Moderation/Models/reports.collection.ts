@@ -32,4 +32,8 @@ export class ReportsCollection extends BaseCollection<ReportEntity> {
   public async deleteReport(reportedMessageId: Snowflake) {
     return this.deleteByQuery({ reportedMessageId });
   }
+
+  public async countFalseReportsByReporter(reporterId: Snowflake) {
+    return this.countByQuery({ reporterId, ["false"]: true });
+  }
 }

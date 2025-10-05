@@ -1,20 +1,21 @@
 import {
-  APIAttachment,
+  ActionRowBuilder,
   ApplicationIntegrationType,
-  Attachment,
   Client,
-  Colors,
   ContextMenuCommandBuilder,
-  MessageContextMenuCommandInteraction
+  MessageContextMenuCommandInteraction,
+  ModalBuilder,
+  Snowflake,
+  TextInputBuilder,
+  TextInputStyle
 } from "discord.js";
 import { BaseMessageContextCommand } from "../../Base/Commands/base.command.js";
-import { Embed } from "../../../Api/Components/Embed/embed.component.js";
-import { InteractionUtilities } from "../../../Utilities/interaction.utilities.js";
-import { ReportService } from "../Services/report.service.js";
+import { systemPrefix } from "../Config/report.config.js";
+import { UserStatsService } from "../../Info/Services/user-stats.service.js";
 
 class ReportMessageCommand extends BaseMessageContextCommand {
   constructor() {
-    super("moderation");
+    super("moderation", false);
   }
 
   public async execute(client: Client, interaction: MessageContextMenuCommandInteraction): Promise<void> {
@@ -23,55 +24,31 @@ class ReportMessageCommand extends BaseMessageContextCommand {
 
     const reporterId = interaction.user.id,
       message = interaction.targetMessage,
-      targetId = message.author.id,
-      reportedMessageUrl = message.url,
-      attachments = [...message.attachments.values()].map((a) => this.toAPIAttachment(a));
+      targetId = message.author.id;
 
     if (reporterId === targetId) throw new Error("Can't report your own message.");
+    const isTargetStaff = await UserStatsService.isStaffMember({ guild: interaction.guild!, id: targetId });
+    if (isTargetStaff) throw new Error("Can't report a staff member.");
 
-    await ReportService.handleReportSubmission({
-      guild: interaction.guild,
-      reporterId,
-      targetId,
-      reportedMessageUrl,
-      attachments,
-      content: message.content,
-      reportedMessageId: message.id
-    });
-    const embed = this.constructEmbed();
-    InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
+    await interaction.showModal(this.constructModal(interaction.targetMessage.id));
   }
 
   protected createMessageContextCommand(): ContextMenuCommandBuilder {
     return new ContextMenuCommandBuilder().setName("Report Message").setIntegrationTypes([ApplicationIntegrationType.GuildInstall]);
   }
 
-  private constructEmbed() {
-    return new Embed(
-      {
-        color: Colors.Green,
-        description: `Message report submitted!`
-      },
-      { color: { state: false } }
-    );
-  }
-
-  private toAPIAttachment(a: Attachment): APIAttachment {
-    return {
-      id: a.id,
-      filename: a.name,
-      description: a.description ?? undefined,
-      content_type: a.contentType ?? undefined,
-      size: a.size,
-      url: a.url,
-      proxy_url: a.proxyURL,
-      height: a.height ?? undefined,
-      width: a.width ?? undefined,
-      ephemeral: a.ephemeral ?? undefined,
-      duration_secs: a.duration ?? undefined,
-      waveform: a.waveform ?? undefined,
-      flags: a.flags?.bitfield
-    };
+  private constructModal(messageId: Snowflake) {
+    const modal = new ModalBuilder().setCustomId(`${systemPrefix}-${messageId}`).setTitle("Report Message");
+    const input = new TextInputBuilder()
+      .setCustomId("details")
+      .setLabel("Details")
+      .setStyle(TextInputStyle.Paragraph)
+      .setRequired(true)
+      .setPlaceholder("Please elaborate as much as possible")
+      .setMinLength(10);
+    const row = new ActionRowBuilder<TextInputBuilder>().addComponents(input);
+    modal.addComponents(row);
+    return modal;
   }
 }
 

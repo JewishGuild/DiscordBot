@@ -17,17 +17,19 @@ class InteractionEvent extends BaseEvent<"interactionCreate"> {
       const subcommand = interaction.isChatInputCommand() ? interaction.options.getSubcommand(false) : null;
       const commandIdentifier = interaction.commandName + (subcommand ? ` (${subcommand})` : "");
       this.logger.log(`Command ${commandIdentifier} has been triggered`);
+      const command = RootCommand.getCommandsCache()[interaction.commandName];
 
       try {
-        const command = RootCommand.getCommandsCache()[interaction.commandName];
         if (command.defer) await interaction.deferReply();
         await command.execute(client, interaction);
         this.logger.success(`Command ${commandIdentifier} has been completed`);
       } catch (error) {
         this.logger.error(`Command ${commandIdentifier} has crashed, info: ${error}`);
         //@ts-ignore
-        const embed = this.createErrorEmbed(error.message);
-        InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
+        const errMsg: string = error.message ?? "Undefined error detected";
+        const embed = this.createErrorEmbed(errMsg);
+        if (command.defer) InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
+        else interaction.isRepliable() && interaction.reply({ content: errMsg, flags: ["Ephemeral"] });
         WebhookUtilities.log({ title: "Error", embed, user: interaction.user });
       }
     }

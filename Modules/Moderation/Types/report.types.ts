@@ -7,13 +7,18 @@ export type BaseReport = {
 
   reportedMessageId: Snowflake;
   reportedMessageUrl: string;
+  reportDetail: string;
   content: string;
   attachments: Array<APIAttachment>;
 };
 
+export type ReportAction = "neutral" | "false" | "delete" | "warn";
+
 export type Report = BaseReport & {
   resolved: boolean;
   resolvedBy: Snowflake;
+  false?: boolean;
+  action?: ReportAction;
 };
 
 export type ReportEntity = Report & BaseEntity;
