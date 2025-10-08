@@ -73,7 +73,7 @@ export class RestrictionUtilities {
   public static formatMuteDM(permanent: boolean, duration: number, reason: string) {
     const estimatedDuration = Math.floor(Date.now() / 1000) + duration * 60;
     return `⛔ You have been muted in JewishGuild server. You will be muted ${
-      permanent ? "permanently" : `until ${TimeUtilities.formatMinutes(estimatedDuration)}`
+      permanent ? "permanently" : `until ${TimeUtilities.formatLocalizedTime(estimatedDuration)}`
     } with reason: \`${reason}\``;
   }
 
