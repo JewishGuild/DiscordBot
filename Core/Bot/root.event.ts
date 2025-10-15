@@ -12,6 +12,7 @@ import { messageSentEvent } from "../../Modules/Info/Events/message-sent.event.j
 import { voiceUpdateEvent } from "../../Modules/Info/Events/voice-update.event.js";
 import { restrictedWordsEvent } from "../../Modules/Moderation/Events/restricted-words.event.js";
 import { reportEvent } from "../../Modules/Moderation/Events/report.event.js";
+import { channelDeleteEvent } from "../../Modules/Security/Events/channel-delete.event.js";
 
 /**
  * Centralized event manager that registers all event handlers dynamically.
@@ -41,7 +42,8 @@ export class RootEvent {
       messageSentEvent,
       voiceUpdateEvent,
       restrictedWordsEvent,
-      reportEvent
+      reportEvent,
+      channelDeleteEvent
     ];
 
     this.registerEvents(eventInstances);

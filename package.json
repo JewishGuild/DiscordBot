@@ -5,6 +5,7 @@
   "scripts": {
     "compile:dev": "rimraf ./dist && tsc -w",
     "start:dev": "cross-env NODE_ENV=development dotenv -e .env.development.local npm run start:local",
+    "start:stage": "cross-env NODE_ENV=stage dotenv -e .env.stage.local npm run start:local",
     "start:prod": "cross-env NODE_ENV=production dotenv -e .env.production.local npm run start:local",
     "start:local": "nodemon ./dist/index.js",
     "build": "tsc",

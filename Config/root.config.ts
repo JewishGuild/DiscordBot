@@ -1,7 +1,7 @@
 import { mongodb } from "../Config/mongodb.config.js";
 import { server } from "./server.config.js";
 
-export type ConfigurationKey = "development" | "production";
+export type ConfigurationKey = "development" | "stage" | "production";
 
 export type ConfigurationValue<T> = {
   [K in keyof T]: T[K];

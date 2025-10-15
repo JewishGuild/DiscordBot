@@ -10,6 +10,10 @@ export const server: Configuration<IServerConfig> = {
     host: "http://localhost",
     port: 3000
   },
+  stage: {
+    host: "http://localhost",
+    port: 3000
+  },
   production: {
     host: process.env.HOST,
     port: Number(process.env.PORT)
