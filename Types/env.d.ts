@@ -12,7 +12,10 @@ declare namespace NodeJS {
     /* Needed */
     BOT_TOKEN: string;
     WEBHOOK_URL: string;
-    REPORTS_CHANNEL: string;
+    REPORTS_CHANNEL_ID: string;
+    MUTED_ROLE_ID: string;
+    MUTED_CHANNEL_ID: string;
+    MEMBER_ROLE_ID: string;
     NODE_ENV: "development" | "stage" | "production";
   }
 }

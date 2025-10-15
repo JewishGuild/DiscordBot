@@ -1,10 +1,16 @@
-export enum RestrictionRoles {
-  Muted = "1369728233666252802"
+export enum RestrictionRolesNames {
+  Muted = "Muted"
 }
+export const RestrictionRoles: Record<RestrictionRolesNames, string> = {
+  [RestrictionRolesNames.Muted]: process.env.MUTED_ROLE_ID
+};
 
-export enum RestrictionChannels {
-  MutedText = "1371995539276824668"
+export enum RestrictionChannelsNames {
+  MutedText = "MutedText"
 }
+export const RestrictionChannels: Record<RestrictionChannelsNames, string> = {
+  [RestrictionChannelsNames.MutedText]: process.env.MUTED_CHANNEL_ID
+};
 
 export enum RestrictionDurations {
   OneMinute = 1,
