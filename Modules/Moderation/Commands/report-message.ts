@@ -20,7 +20,7 @@ class ReportMessageCommand extends BaseMessageContextCommand {
 
   public async execute(client: Client, interaction: MessageContextMenuCommandInteraction): Promise<void> {
     if (!interaction.guild) throw new Error("Must be inside of guild.");
-    if (interaction.targetMessage.author.bot) throw new Error("Can't report bots' messages.");
+    if (interaction.targetMessage.author.bot) throw new Error("Can't report bots' message.");
 
     const reporterId = interaction.user.id,
       message = interaction.targetMessage,
