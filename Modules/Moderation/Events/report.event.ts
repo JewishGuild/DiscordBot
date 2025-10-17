@@ -16,10 +16,10 @@ class ReportEvent extends BaseEvent<"interactionCreate"> {
 
     if (interaction.isButton()) {
       const customId = interaction.customId;
-      await interaction.deferReply({ flags: ["Ephemeral"] });
 
       try {
         if (customId.startsWith(systemPrefix)) {
+          await interaction.deferReply({ flags: ["Ephemeral"] });
           const reportedMessageId = customId.split("-")[1];
           const action = customId.split("-")[2] as ReportAction;
           const message = interaction.message;
@@ -35,10 +35,10 @@ class ReportEvent extends BaseEvent<"interactionCreate"> {
 
     if (interaction.isModalSubmit()) {
       const customId = interaction.customId;
-      await interaction.deferReply({ flags: ["Ephemeral"] });
 
       try {
         if (customId.startsWith(systemPrefix)) {
+          await interaction.deferReply({ flags: ["Ephemeral"] });
           const reportedMessageId = customId.split("-")[1];
           const messageService = new MessageService(interaction.guild, interaction.channel as TextChannel);
           const message = await messageService.resolveMessageById(reportedMessageId);
