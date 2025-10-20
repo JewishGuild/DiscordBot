@@ -82,12 +82,12 @@ export class RestrictionService {
 
     // Revoke the mute and return roles if it's an existing guild member
     if (member instanceof GuildMember) {
-      reassignedRoles = [...(await this.revokeMute(member, mutedDocument))];
+      await UserStatsCollection.getInstance().updateGenericStats({ guild: member.guild, id: member.id }, { isMuted: false });
       await UserStatsCollection.getInstance().updateIncrementalStats(
         { guild: member.guild, id: member.id },
         { muteCount: -1, muteDurationCount: -mutedDocument.duration }
       );
-      await UserStatsCollection.getInstance().updateGenericStats({ guild: member.guild, id: member.id }, { isMuted: false });
+      reassignedRoles = [...(await this.revokeMute(member, mutedDocument))];
 
       // log
       const expired = !!!interaction;
@@ -111,8 +111,8 @@ export class RestrictionService {
 
   /** Revokes mute by adding stripped roles, removing mute role */
   private static async revokeMute(member: GuildMember, document: MutedMemberEntity) {
-    const roles = await this.reassignRoles(member, document.roles);
     await member.roles.remove(RestrictionRoles.Muted);
+    const roles = await this.reassignRoles(member, document.roles);
     return roles;
   }
 
@@ -122,8 +122,10 @@ export class RestrictionService {
 
     for (const [id, role] of member.roles.cache) {
       try {
-        await member.roles.remove(id);
-        strippedRoles.push(id);
+        if (id !== RestrictionRoles.Muted) {
+          await member.roles.remove(id);
+          strippedRoles.push(id);
+        }
       } catch {}
     }
     return strippedRoles;

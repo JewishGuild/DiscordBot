@@ -44,8 +44,8 @@ export class RootEvent {
       voiceUpdateEvent,
       restrictedWordsEvent,
       reportEvent,
-      channelDeleteEvent
-      // mutedRolesEvent
+      channelDeleteEvent,
+      mutedRolesEvent
     ];
 
     this.registerEvents(eventInstances);
