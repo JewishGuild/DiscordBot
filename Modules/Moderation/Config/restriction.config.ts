@@ -1,8 +1,10 @@
 export enum RestrictionRolesNames {
-  Muted = "Muted"
+  Muted = "Muted",
+  MuteAppeal = "MuteAppeal"
 }
 export const RestrictionRoles: Record<RestrictionRolesNames, string> = {
-  [RestrictionRolesNames.Muted]: process.env.MUTED_ROLE_ID
+  [RestrictionRolesNames.Muted]: process.env.MUTED_ROLE_ID,
+  [RestrictionRolesNames.MuteAppeal]: process.env.MUTE_APPEAL_ROLE_ID
 };
 
 export enum RestrictionChannelsNames {

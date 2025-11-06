@@ -48,6 +48,7 @@ export class RestrictionService {
   /** Mute a member by removing their roles and applying the mute role*/
   public static async muteMember({ interaction, member, moderatorId, duration, reason }: MuteMemberParams) {
     const roles = await this.applyMute(member);
+    await member.roles.add(RestrictionRoles.MuteAppeal); // Only on mute given
 
     const mutedMember: MutedMember = {
       id: member.id,
@@ -112,6 +113,7 @@ export class RestrictionService {
   /** Revokes mute by adding stripped roles, removing mute role */
   private static async revokeMute(member: GuildMember, document: MutedMemberEntity) {
     await member.roles.remove(RestrictionRoles.Muted);
+    await member.roles.remove(RestrictionRoles.MuteAppeal);
     const roles = await this.reassignRoles(member, document.roles);
     return roles;
   }

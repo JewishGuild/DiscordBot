@@ -14,6 +14,7 @@ declare namespace NodeJS {
     WEBHOOK_URL: string;
     REPORTS_CHANNEL_ID: string;
     MUTED_ROLE_ID: string;
+    MUTE_APPEAL_ROLE_ID: string;
     MUTED_CHANNEL_ID: string;
     MEMBER_ROLE_ID: string;
     NODE_ENV: "development" | "stage" | "production";
