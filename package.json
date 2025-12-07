@@ -1,5 +1,5 @@
 {
-  "name": "Jewish-Guild ",
+  "name": "jewish-guild",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -27,7 +27,7 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "cron": "^3.5.0",
-    "discord.js": "^14.19.3",
+    "discord.js": "^14.25.1",
     "dotenv": "^16.4.7",
     "dotenv-cli": "^8.0.0",
     "express": "^4.21.2",
