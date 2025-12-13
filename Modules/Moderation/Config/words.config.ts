@@ -1,5 +1,5 @@
 export const restrictedWords = [
-  "heil",
+  /*"heil",*/
   "hitler",
   /* "goy", "palestine", "palestinian",*/ "intifada",
   "intefada",
