@@ -19,7 +19,7 @@ class ListSubCommand extends BaseSubCommand {
     const embed = new Embed({
       title: `Warning list of ${userTag}`,
       fields: warnings.map((warn) => ({
-        name: `Reason: ${warn.reason.slice(0, 245)}`, // backlog
+        name: `Reason: \`${warn.reason.slice(0, 240)}\``, // backlog
         value: `Given by: <@${warn.moderatorId}>\nAt: \`${warn.createDate}\`\nID: \`${warn._id.toString()}\``
       }))
     });
