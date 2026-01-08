@@ -2,7 +2,8 @@ import { Client, ChatInputCommandInteraction, SlashCommandSubcommandBuilder } fr
 import { BaseSubCommand } from "../../../Base/Commands/base.sub-command.js";
 import { RestrictionService } from "../../Services/restriction.service.js";
 import { Embed } from "../../../../Api/Components/Embed/embed.component.js";
-import { WarningEntity } from "Modules/Moderation/Types/warns.types.js";
+import { WarningEntity } from "../../../../Modules/Moderation/Types/warns.types.js";
+import { TimeUtilities } from "../../../../Utilities/time.utilities.js";
 
 class ListSubCommand extends BaseSubCommand {
   public async execute(client: Client, interaction: ChatInputCommandInteraction): Promise<void> {
@@ -18,9 +19,11 @@ class ListSubCommand extends BaseSubCommand {
   private constructEmbed(userTag: string, warnings: Array<WarningEntity>) {
     const embed = new Embed({
       title: `Warning list of ${userTag}`,
-      fields: warnings.map((warn) => ({
-        name: `Reason: \`${warn.reason.slice(0, 240)}\``, // backlog
-        value: `Given by: <@${warn.moderatorId}>\nAt: \`${warn.createDate}\`\nID: \`${warn._id.toString()}\``
+      fields: warnings.map((warn, index) => ({
+        name: `Warn ID: \`${warn._id.toString()}\``, // backlog
+        value: `__Reason:__   "${warn.reason.slice(0, 245)}"
+        __Given by:__\t <@${warn.moderatorId}>
+        __At:__   ${TimeUtilities.formatLocalizedTime(Math.floor(warn.createDate.getTime() / 1000))}${index !== warnings.length - 1 && "\nㅤ"}`
       }))
     });
     return embed;

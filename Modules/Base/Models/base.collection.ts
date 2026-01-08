@@ -2,8 +2,8 @@ import { Collection, Db, ObjectId, FindOptions, Filter, WithId, OptionalUnlessRe
 
 export type BaseEntity = {
   _id: ObjectId;
-  createDate?: Date;
-  updateDate?: Date;
+  createDate: Date;
+  updateDate: Date;
 };
 
 export abstract class BaseCollection<T extends BaseEntity> {
