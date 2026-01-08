@@ -14,16 +14,18 @@ class RestrictedWordsEvent extends BaseEvent<"messageCreate"> {
     const [message] = args;
     if (!message.guild || !message.member) return;
 
-    const { matched, triedEvading } = findRestricted(message.content.toLowerCase());
+    const { matched, hits, triedEvading } = findRestricted(message.content.toLowerCase());
     if (matched) {
       const isTargetStaff = await UserStatsService.isStaffMember({ guild: message.guild, id: message.member.id });
+      const firstViolatingWord = hits[0];
+      const context = this.getContentAroundWord(message.content, firstViolatingWord);
 
       if (!isTargetStaff) {
         await message.delete();
         await RestrictionService.warnMember({
           member: message.member,
           moderatorId: client.user.id,
-          reason: `Restricted content detected: "${message.content}"`
+          reason: `Restricted content detected: "${firstViolatingWord}", context: "${context}"`
         });
 
         if (triedEvading) {
@@ -31,12 +33,23 @@ class RestrictedWordsEvent extends BaseEvent<"messageCreate"> {
             member: message.member,
             duration: RestrictionDurations.SixHours,
             moderatorId: client.user.id,
-            reason: `Tried to evade restricted content detection: "${message.content}"`
+            reason: `Tried to evade restricted content detection: "${firstViolatingWord}", context: "${context}"`
           });
         }
       }
     }
   }
-}
 
+  private getContentAroundWord(content: string, word: string) {
+    const triggerIndex = content.toLowerCase().indexOf(word);
+    const radius = 95;
+    const start = Math.max(0, triggerIndex - radius);
+    const end = Math.min(content.length, start + radius * 2);
+    let displayContent = content.slice(start, end);
+
+    if (start > 0) displayContent = `...${displayContent}`;
+    if (end < content.length) displayContent = `${displayContent}...`;
+    return displayContent;
+  }
+}
 export const restrictedWordsEvent = new RestrictedWordsEvent();
