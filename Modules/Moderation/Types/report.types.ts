@@ -12,7 +12,7 @@ export type BaseReport = {
   attachments: Array<APIAttachment>;
 };
 
-export type ReportAction = "neutral" | "false" | "delete" | "warn";
+export type ReportAction = "neutral" | "false" | "delete" | "warn" | "perma";
 
 export type Report = BaseReport & {
   resolved: boolean;

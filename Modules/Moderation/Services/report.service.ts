@@ -10,6 +10,7 @@ import { MemberService } from "../../../Api/Guild/Member/member.service.js";
 import { MessageService } from "../../../Api/Guild/Channel/TextChannel/Message/message.service.js";
 import { DirectMessageUtilities } from "../../../Utilities/direct-message.utilities.js";
 import { UserStatsCollection } from "../../../Modules/Info/Models/user-stats.collection.js";
+import { RestrictionDurations } from "../Config/restriction.config.js";
 
 type HandleReportSubmissionParams = {
   guild: Guild;
@@ -93,7 +94,7 @@ export class ReportService {
     const { _id, reporterId, targetId, content, attachments, reportedMessageUrl, reportDetail } = reportDoc;
     const memberService = new MemberService(message.guild as Guild);
 
-    if (action === "delete" || action === "warn") {
+    if (action === "delete" || action === "warn" || action === "perma") {
       try {
         const channelService = new ChannelService(message.guild as Guild);
         const reportedMessageChannel = await channelService.getChannelById<TextChannel>(
@@ -107,6 +108,16 @@ export class ReportService {
       if (action === "warn") {
         const member = await memberService.resolveMemberById(targetId);
         await RestrictionService.warnMember({ member, moderatorId: resolver, reason: `Was found guilty under report id "\`${_id.toString()}\`"` });
+      }
+
+      if (action === "perma") {
+        const member = await memberService.resolveMemberById(targetId);
+        await RestrictionService.muteMember({
+          member,
+          moderatorId: resolver,
+          reason: `Was found guilty under report id "\`${_id.toString()}\`"`,
+          duration: RestrictionDurations.Permanent
+        });
       }
     }
 

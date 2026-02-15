@@ -172,13 +172,13 @@ export class RestrictionService {
     const doc = await WarnsCollection.getInstance().insertWarning(warning);
     await UserStatsCollection.getInstance().updateIncrementalStats({ guild: member.guild, id: member.id }, { warnCount: 1 });
 
-    // log
-    const informed = await DirectMessageUtilities.sendDM(member.user, RestrictionUtilities.formatWarnDM(reason, doc._id.toString()));
-    const embed = RestrictionUtilities.createWarnEmbed({ id: member.id, moderatorId, reason, warnId: doc._id.toString() });
-    const comments = informed ? `Member was informed via DM.` : `Member was not informed via DM likely due to their DM settings.`;
-    await WebhookUtilities.log({ title: "Member Warned", user: member.user, embed, comments });
-
-    if (interaction) await InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
+    if (member instanceof GuildMember) {
+      const informed = await DirectMessageUtilities.sendDM(member.user, RestrictionUtilities.formatWarnDM(reason, doc._id.toString()));
+      const embed = RestrictionUtilities.createWarnEmbed({ id: member.id, moderatorId, reason, warnId: doc._id.toString() });
+      const comments = informed ? `Member was informed via DM.` : `Member was not informed via DM likely due to their DM settings.`;
+      await WebhookUtilities.log({ title: "Member Warned", user: member.user, embed, comments });
+      if (interaction) await InteractionUtilities.fadeReply(interaction, { embeds: [embed] });
+    }
 
     // mute
     const warnings = await this.getMemberWarnings(member.id);
