@@ -10,7 +10,7 @@ export class DirectMessageUtilities {
       await dmChannel.send(options);
       informed = true;
     } catch {
-      // Don't care if the message is not sent because it means the user's dms are turned off
+      return informed;
     } finally {
       return informed;
     }

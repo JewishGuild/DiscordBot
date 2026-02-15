@@ -42,6 +42,8 @@ export class UserStatsCollection extends BaseCollection<UserStatsEntity> {
       warnCount: warnings.length,
       muteCount: muted ? 1 : 0,
       muteDurationCount: 0,
+      reportsCount: 0,
+      falseReportsCount: 0,
       joins: member.joinedTimestamp ? [member.joinedTimestamp] : [],
       leaves: [],
 

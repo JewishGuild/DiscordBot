@@ -8,6 +8,8 @@ export type UserStats = {
   boosted?: boolean;
   warnCount?: number;
   muteCount?: number;
+  reportsCount?: number;
+  falseReportsCount?: number;
   muteDurationCount?: number;
   joins?: Array<number>;
   leaves?: Array<number>;

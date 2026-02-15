@@ -67,8 +67,8 @@ export class RestrictionService {
 
     // log
     const title = updated ? `Member Mute Duration Increased` : `Member Muted`;
-    const informed = await DirectMessageUtilities.sendDM(member.user, RestrictionUtilities.formatMuteDM(doc.permanent, doc.duration, reason));
-    const embed = RestrictionUtilities.createMuteEmbed({ id: member.id, moderatorId, duration: doc.duration, reason, roles });
+    const informed = await DirectMessageUtilities.sendDM(member.user, RestrictionUtilities.formatMuteDM(mutedMember.permanent, mutedMember.duration, reason));
+    const embed = RestrictionUtilities.createMuteEmbed({ id: member.id, moderatorId, duration: mutedMember.duration, reason, roles });
     const comments = informed ? `Member was informed via DM.` : `Member was not informed via DM likely due to their DM settings.`;
     await WebhookUtilities.log({ title, user: interaction?.user || Bot.getInstance().getClient().user!, embed, comments });
 
