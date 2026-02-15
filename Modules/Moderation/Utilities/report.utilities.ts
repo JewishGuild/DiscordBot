@@ -22,12 +22,28 @@ export class ReportUtilities {
     reportedMessageUrl,
     resolver,
     reportDetail,
-    action
-  }: BaseReport & { resolver?: Snowflake; action?: Report["action"] }) {
+    action,
+    reportId
+  }: BaseReport & { reportId?: string; resolver?: Snowflake; action?: Report["action"] }) {
     return new Embed({
       title: `Message Report`,
       description: `**__Report details:__**\n${reportDetail}`,
-      fields: this.setFields({ content, attachments, reporter: reporterId, target: targetId, source: reportedMessageUrl, resolver, action })
+      fields: this.setFields({ content, attachments, reporter: reporterId, target: targetId, source: reportedMessageUrl, resolver, action }),
+      footer: { text: `Report ID: ${reportId}` }
+    });
+  }
+
+  public static createReportResolvedEmbed(reportId: string) {
+    return new Embed({
+      title: `Report resolved`,
+      description: `Your report \`${reportId}\` has been resolved. Thank you very much!`
+    });
+  }
+
+  public static createReportFalseEmbed(reportId: string) {
+    return new Embed({
+      title: `Report flagged as false`,
+      description: `Your report \`${reportId}\` has been flagged as false. Contact support for further information`
     });
   }
 

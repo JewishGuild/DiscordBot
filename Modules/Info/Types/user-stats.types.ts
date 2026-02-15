@@ -25,7 +25,7 @@ export type UserStats = {
 };
 
 export type ArrayUserStats = "nicknames" | "joins" | "leaves";
-export type IncrementalUserStats = "warnCount" | "muteCount" | "muteDurationCount";
+export type IncrementalUserStats = "warnCount" | "muteCount" | "muteDurationCount" | "falseReportsCount" | "reportsCount";
 export type NonGenericUserStats = "id" | ArrayUserStats | IncrementalUserStats;
 export type GenericUserStats = Omit<UserStats, NonGenericUserStats>;
 

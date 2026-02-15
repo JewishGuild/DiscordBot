@@ -79,7 +79,9 @@ class MemberInfoCommand extends BaseSlashCommand {
           { name: `Infraction Metrics ${prison}`, value: "ㅤ", inline: false },
           { name: "Overall mutes count", value: `\`${stats.muteCount}\``, inline: true },
           { name: "Overall mutes duration", value: `\`${TimeUtilities.formatMinutes(stats.muteDurationCount ?? 0)}\``, inline: true },
-          { name: "Overall warns count", value: `\`${stats.warnCount}\``, inline: true }
+          { name: "Overall warns count", value: `\`${stats.warnCount}\``, inline: true },
+          { name: "Overall reports count", value: `\`${stats.reportsCount}\``, inline: true },
+          { name: "Overall false reports count", value: `\`${stats.falseReportsCount}\``, inline: true }
         ]
       },
       { footer: { state: true }, timestamp: { state: true } }

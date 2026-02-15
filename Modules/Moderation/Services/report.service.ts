@@ -8,6 +8,8 @@ import { ReportUtilities } from "../Utilities/report.utilities.js";
 import { RestrictionService } from "./restriction.service.js";
 import { MemberService } from "../../../Api/Guild/Member/member.service.js";
 import { MessageService } from "../../../Api/Guild/Channel/TextChannel/Message/message.service.js";
+import { DirectMessageUtilities } from "../../../Utilities/direct-message.utilities.js";
+import { UserStatsCollection } from "../../../Modules/Info/Models/user-stats.collection.js";
 
 type HandleReportSubmissionParams = {
   guild: Guild;
@@ -44,10 +46,6 @@ export class ReportService {
     const exists = await ReportsCollection.getInstance().getReportById(reportedMessageId);
     if (exists) throw new Error(`There's already an existing report on ${ReportUtilities.formatReportedMessageUrl(reportedMessageUrl)}`);
 
-    const embed = ReportUtilities.createReportEmbed({ reporterId, targetId, content, reportDetail, attachments, reportedMessageUrl, reportedMessageId });
-    const row = ReportUtilities.createReportRow(reportedMessageId);
-    await this.submitReportMessage({ embed, row, guild });
-
     const report: Report = {
       reporterId,
       targetId,
@@ -59,7 +57,23 @@ export class ReportService {
       resolved: false,
       resolvedBy: ""
     };
-    await ReportsCollection.getInstance().insertReport(report);
+    const reportEntity = await ReportsCollection.getInstance().insertReport(report);
+    await UserStatsCollection.getInstance().updateIncrementalStats({ guild, id: reporterId }, { reportsCount: 1 });
+
+    if (reportEntity) {
+      const embed = ReportUtilities.createReportEmbed({
+        reporterId,
+        targetId,
+        content,
+        reportDetail,
+        attachments,
+        reportedMessageUrl,
+        reportedMessageId,
+        reportId: reportEntity._id.toString()
+      });
+      const row = ReportUtilities.createReportRow(reportedMessageId);
+      await this.submitReportMessage({ embed, row, guild });
+    }
   }
 
   private static async resolveReportsChannel(guild: Guild) {
@@ -77,6 +91,7 @@ export class ReportService {
     if (!reportDoc) throw new Error("Invalid entry.");
 
     const { _id, reporterId, targetId, content, attachments, reportedMessageUrl, reportDetail } = reportDoc;
+    const memberService = new MemberService(message.guild as Guild);
 
     if (action === "delete" || action === "warn") {
       try {
@@ -90,7 +105,6 @@ export class ReportService {
       } catch (err) {}
 
       if (action === "warn") {
-        const memberService = new MemberService(message.guild as Guild);
         const member = await memberService.resolveMemberById(targetId);
         await RestrictionService.warnMember({ member, moderatorId: resolver, reason: `Was found guilty under report id "\`${_id.toString()}\`"` });
       }
@@ -105,15 +119,24 @@ export class ReportService {
       reportedMessageId,
       resolver,
       reportDetail,
-      action
+      action,
+      reportId: _id.toString()
     });
     await ReportsCollection.getInstance().editReport(reportedMessageId, { resolved: true, resolvedBy: resolver, false: action === "false", action });
     await this.editReportMessage({ message, embed });
     if (action === "false") await this.handleFalseReport({ resolver, reporterId, message });
+
+    try {
+      const reporter = await memberService.resolveMemberById(reporterId);
+      await DirectMessageUtilities.sendDM(reporter.user, {
+        embeds: [action === "false" ? ReportUtilities.createReportFalseEmbed(_id.toString()) : ReportUtilities.createReportResolvedEmbed(_id.toString())]
+      });
+    } catch {}
   }
 
   public static async handleFalseReport({ resolver, reporterId, message }: HandleFalseReportParams) {
     const falseReportsCount = await ReportsCollection.getInstance().countFalseReportsByReporter(reporterId);
+    await UserStatsCollection.getInstance().updateIncrementalStats({ guild: message.guild as Guild, id: reporterId }, { falseReportsCount: 1 });
 
     if (falseReportsCount > 0 && falseReportsCount % 5 === 0) {
       const memberService = new MemberService(message.guild as Guild);
@@ -124,5 +147,13 @@ export class ReportService {
 
   private static async editReportMessage({ embed, row, message }: ResolveReportMessageParams) {
     return await message.edit({ embeds: [embed], components: row ? [row] : [] });
+  }
+
+  public static async getReportsCount(reporterId: Snowflake) {
+    return await ReportsCollection.getInstance().countReportsByReporter(reporterId);
+  }
+
+  public static async getFalseReportsCount(reporterId: Snowflake) {
+    return await ReportsCollection.getInstance().countFalseReportsByReporter(reporterId);
   }
 }

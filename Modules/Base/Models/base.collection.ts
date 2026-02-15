@@ -103,6 +103,6 @@ export abstract class BaseCollection<T extends BaseEntity> {
 
   /** Counts documents that align with the query */
   public async countByQuery(query: Filter<T> = {}): Promise<number> {
-    return this.collection.countDocuments(query);
+    return this.collection.countDocuments(query) || 0;
   }
 }

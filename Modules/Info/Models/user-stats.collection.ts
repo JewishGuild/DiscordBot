@@ -4,6 +4,7 @@ import { ArrayUserStats, IncrementalUserStats, NonGenericUserStats, UserStats, U
 import { Guild, Snowflake } from "discord.js";
 import { PermissionsUtilities } from "../../../Utilities/permissions.utilities.js";
 import { RestrictionService } from "../../Moderation/Services/restriction.service.js";
+import { ReportService } from "../../../Modules/Moderation/Services/report.service.js";
 
 export class UserStatsCollection extends BaseCollection<UserStatsEntity> {
   private static instance: UserStatsCollection;
@@ -28,6 +29,8 @@ export class UserStatsCollection extends BaseCollection<UserStatsEntity> {
     const permissions = PermissionsUtilities.analyze(member.permissions.bitfield);
     const warnings = await RestrictionService.getMemberWarnings(id);
     const muted = await RestrictionService.isMemberMuted(id);
+    const reportsCount = await ReportService.getReportsCount(id);
+    const falseReportsCount = await ReportService.getFalseReportsCount(id);
 
     const nicknames: Array<string> = [];
     if (member.nickname) nicknames.push(member.nickname);
@@ -42,8 +45,8 @@ export class UserStatsCollection extends BaseCollection<UserStatsEntity> {
       warnCount: warnings.length,
       muteCount: muted ? 1 : 0,
       muteDurationCount: 0,
-      reportsCount: 0,
-      falseReportsCount: 0,
+      reportsCount: reportsCount,
+      falseReportsCount: falseReportsCount,
       joins: member.joinedTimestamp ? [member.joinedTimestamp] : [],
       leaves: [],
 

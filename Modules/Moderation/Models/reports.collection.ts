@@ -36,4 +36,8 @@ export class ReportsCollection extends BaseCollection<ReportEntity> {
   public async countFalseReportsByReporter(reporterId: Snowflake) {
     return this.countByQuery({ reporterId, ["false"]: true });
   }
+
+  public async countReportsByReporter(reporterId: Snowflake) {
+    return this.countByQuery({ reporterId });
+  }
 }
